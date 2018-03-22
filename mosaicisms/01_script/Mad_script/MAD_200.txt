@@ -1,0 +1,85 @@
+library(parallel)
+library(mad)
+
+
+setwd("/scratch/jpoliti/AD/CIDR_LOAD/")
+
+cidr_load <- setupParGADA.B.deviation(NumCols=6, GenoCol=6, BAFcol=4, log2ratioCol=5, mc.cores=15)
+save(cidr_load, file="cidr_load.Rdata")
+
+
+load("cidr_load.Rdata")
+parSBL(cidr_load, estim.sigma2=TRUE, aAlpha=0.8, mc.cores=15)
+parBE.B.deviation(cidr_load, T=9, MinSegLen=200, mc.cores=15)
+
+###
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/exportSegments2File.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD_2.R")
+
+
+exportSegments2File(cidr_load, file="res_T_9_M_200.txt")
+
+
+
+#
+# POST-ANALYSIS 
+#
+
+library(data.table)
+library(Cairo)
+
+
+
+ss <- fread("res_T_9_M_200.txt", header=T, data.table=FALSE)
+ss <- ss[ss$State!=5, ]
+ss$size <- (ss$EndProbe - ss$IniProbe)/1000000
+ss.del <- ss[ss$LRR <= -0.1 & ss$Bdev > 0.1 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.gain <- ss[ss$LRR >= 0.05 & ss$Bdev > 0.1 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.UPD <- ss[ss$LRR > -0.1 & ss$LRR <= 0.05 & ss$Bdev > 0.1 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+
+dim(ss.del)
+dim(ss.gain)
+dim(ss.UPD)
+
+cidr_load <- addAnnot(cidr_load)
+
+##Dels 
+for (i in 1:nrow(ss.del)){
+CairoPNG(paste0("plots/dels/", ss.del$sample[i], "_chr", ss.del$chr[i], ".png"))
+reg <- ss.del[ss.del$sample==ss.del$sample[i],]
+plotZoomQMosaic(cidr_load, ss.del$chr[i], ss.del$sample[i], regions=reg)
+dev.off()
+}
+
+##Gains 
+for (i in 1:nrow(ss.gain)){
+CairoPNG(paste0("plots/dups/", ss.gain$sample[i], "_chr", ss.gain$chr[i], ".png"))
+reg <- ss.gain[ss.gain$sample==ss.gain$sample[i],]
+plotZoomQMosaic(cidr_load, ss.gain$chr[i], ss.gain$sample[i], regions=reg)
+dev.off()
+}
+
+
+
+##UPD 
+for (i in 1:nrow(ss.UPD)){
+CairoPNG(paste0("plots/UPD/", ss.UPD$sample[i], "_chr", ss.UPD$chr[i], ".png"))
+reg <- ss.UPD[ss.UPD$sample==ss.UPD$sample[i],]
+plotZoomQMosaic(cidr_load, ss.UPD$chr[i], ss.UPD$sample[i], regions=reg)
+dev.off()
+}
+
+
+
+
+#########################
+
+samples <- unique(ss.f$sample)
+
+
+plotChr(cidr_load, chr=13, sample="27117BL1@1064613810")
+dev.off()
+
+plotChr(cidr_load, chr=13, sample="18514BL1@1064614478")
+
