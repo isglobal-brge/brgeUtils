@@ -38,3 +38,9 @@ tabix -p vcf merged.vcf.gz
 
 ## Run peddy
 python -m peddy --prefix cancer merged.vcf.gz peddy.fam
+
+## Read ancestry and PCs (R)
+a <- read.csv("cancer.het_check.csv", as.is = TRUE)
+selSamps <- a$sample_id[a$call_rate > 0.95 & a$ancestry.prediction == "EUR" & a$ancestry.prob > 0.9]
+rownames(a) <- a$sample_id
+
