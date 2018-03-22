@@ -42,7 +42,7 @@ Sabremos que se ha creado un screen porque en la parte superior de la ventana po
 
 ![image1](./Image1.jpg)
 
-Para que funcione esta combinación debe pulsarse *Ctrl + A* y *Ctrl + C* son combinaciones de botones, por lo que se deben pulsar a la vez. En este caso, primero pulsamos *Ctrl + A* y luego *Ctrl + C*. Esta combinación nos genera una nueva pestaña con el numero 1. Podemos ver las pestañas existentes con:
+Para que funcione esta combinación debe pulsarse *Ctrl + A* y *Ctrl + C* seguidamente. Esta combinación nos genera una nueva pestaña con el numero 1. Podemos ver las pestañas existentes con:
 
 ```{bash, eval=FALSE}
 #Listar pestañas
@@ -259,7 +259,7 @@ source ~/.bash_profile
 ## For
 ```{bash, eval=FALSE}
 for i in $(cat list) #opcion 1
-for i in {1..22}
+for i in {1..22} #opcion 2
 do
 	command1 on $OUTPUT
 	command2 on $OUTPUT
@@ -268,9 +268,9 @@ done
 
 for i in $(cat list)
 do
-  mkdir $i
-  mv $i.mrm.sig_results.txt ./$i
-  mv ../plots/"$i"_mrmosaic_plot.pdf /home/isglobal.lan/dfernandez/data/PROJECTS/URDcat/all_mrmosaic_results/
+  mkdir $i #creara una carpeta con el nombre de la primera linea del fichero list
+  mv $i.mrm.sig_results.txt ./$i # te mueve el nombre el fichero a la localizacion $i.
+   
 done
 ```
 
