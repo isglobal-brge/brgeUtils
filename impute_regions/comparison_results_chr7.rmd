@@ -1,0 +1,145 @@
+---
+title: "Comparison: Michigan Imputation Server / Shapeit+Minimac3"
+subtitle: "Chromosome 7"
+author: "Ignacio Tolosana"
+output: pdf_document
+---
+
+# Imputation
+
+## Data exploration
+```{r}
+michigan
+minimac
+```
+
+
+## DS values
+Distribution of the DS values in each imputation
+```{r}
+par(mfrow=c(1,2))
+HIST_MICHIGAN <- hist(DS_michigan, breaks=seq(0, 2, by=0.05), main="Michigan Imputation Server", xlab="DS values")
+HIST_MINIMAC <- hist(DS_minimac, breaks=seq(0, 2, by=0.05), main="Minimac3", xlab="DS values")
+```
+
+
+DS correlation by individuals
+```{r}
+min(cor_by_ind)
+max(cor_by_ind)
+mean(cor_by_ind)
+sum(cor_by_ind > 0.95)/length(cor_by_ind)
+sum(cor_by_ind > 0.99)/length(cor_by_ind)
+```
+
+
+Histogram of the DS correlation values by individuals
+```{r}
+par(mfrow=c(1,1))
+CORR_HIST <- hist(cor_by_ind, breaks=seq(0, 1, by=0.02), main="DS correlation values by individuals", xlab="DS correlation")
+```
+
+
+## R^2^
+
+Density and histogram plots comparing the RS2 values in both methods ("ismich = TRUE" indicates the values for the Michigan imputation, whereas "ismich = FALSE" shows the values for the Minimac imputation)
+```{r}
+ggdensity(comparison, x = "rsq",
+          add = "mean", rug = TRUE,
+          color = "ismich", fill = "ismich",
+          palette = c("#00AFBB", "#E7B800"))
+
+par(mfrow=c(1,2))
+HIST_R2_MICHIGAN <- hist(info(michigan)$R2, breaks=seq(0.5, 1, by=0.02), main="Michigan", xlab="R2")
+HIST_R2_MINIMAC <- hist(info(michigan)$R2, breaks=seq(0.5, 1, by=0.02), main="Minimac3", xlab="R2")
+```
+
+
+## Genotype predictions
+
+Compare the genotype predictions with each method by individuals. "perc_by_ind" is the % of SNPs by individual predicted equally in both methods
+```{r}
+min(perc_by_ind)
+max(perc_by_ind)
+mean(perc_by_ind)
+sum(perc_by_ind > 0.95)/length(perc_by_ind)
+sum(perc_by_ind > 0.99)/length(perc_by_ind)
+```
+
+
+Plot histogram of the genotypes equally predicted by individuals in both methods
+```{r}
+GENO_HIST <- hist(perc_by_ind, breaks=seq(0, 1, by=0.02), main="SNPs (genotypes) equally predicted with Michigan and Minimac3", xlab="% of equally predicted genotypes")
+```
+
+
+
+# Inversion prediction
+
+Predicted inversions with scoreInvHap
+```{r}
+michigan_inv
+minimac_inv
+```
+
+Comparison table
+```{r}
+scoreinvhap_table
+sum(diag(scoreinvhap_table))/sum(scoreinvhap_table)
+```
+
+
+Comparison of the results for both imputation methods
+```{r}
+par(mfrow=c(1,2))
+hist(maxscores(michigan_inv), breaks=seq(0, 1, by=0.05), main="Michigan", xlab="Maxscores")
+hist(maxscores(minimac_inv), breaks=seq(0, 1, by=0.05), main="Minimac", xlab="Maxscores")
+```
+
+Score correlation by individuals between both imputation methods
+```{r}
+min(score_corr)
+max(score_corr)
+mean(score_corr)
+par(mfrow=c(1,1))
+SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0, 1, by=0.02), main="Score correlation by individuals", xlab="Score correlation")
+```
+
+Difference score between the highest similarity score and the second highest, in both imputation methods
+```{r}
+par(mfrow=c(1,2))
+hist(diffscores(michigan_inv), breaks=seq(0, 1, by=0.05), main="Michigan", xlab="Difference score")
+hist(diffscores(minimac_inv), breaks=seq(0, 1, by=0.05), main="Minimac", xlab="Difference score")
+```
+
+Numbers of scores used
+```{r}
+mean(numSNPs(michigan_inv))
+max(numSNPs(michigan_inv))
+min(numSNPs(michigan_inv))
+mean(numSNPs(minimac_inv))
+max(numSNPs(minimac_inv))
+min(numSNPs(minimac_inv))
+```
+
+Number of samples in both imputation methods before and after QC filtering
+```{r}
+length(classification(michigan_inv))
+length(classification(michigan_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(michigan_inv, minDiff = 0.1, callRate = 0.9))/length(classification(michigan_inv))
+length(classification(minimac_inv))
+length(classification(minimac_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(minimac_inv, minDiff = 0.1, callRate = 0.9))/length(classification(minimac_inv))
+```
+
+# Plots with invClust
+Michigan:
+```{r}
+plotInv(michigan_invclust, classification = classification(michigan_inv))
+```
+
+Minimac:
+```{r}
+plotInv(minimac_invclust, classification = classification(minimac_inv))
+```
+

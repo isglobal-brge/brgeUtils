@@ -1,0 +1,239 @@
+---
+title: "Comparison: Michigan Imputation Server / Shapeit+Minimac3"
+author: "Ignacio Tolosana"
+output: html_document
+---
+
+```{r}
+library(VariantAnnotation)
+library(ggplot2)
+library(snpStats)
+```
+
+
+Import vcf files with data from michigan imputation and minimac imputation
+```{r}
+michigan <- readVcf("/scratch/itolosana/impute/new_michigan_imputation/final_michigan_chr7.vcf.gz", "hg19")
+minimac <- readVcf("/scratch/itolosana/impute/new_minimac_imputation/final_minimac_chr7.vcf.gz", "hg19")
+
+#michigan <- readVcf("/scratch/itolosana/impute/new_michigan_imputation/final_michigan_chr8.vcf.gz", "hg19")
+#minimac <- readVcf("/scratch/itolosana/impute/new_minimac_imputation/final_minimac_chr8.vcf.gz", "hg19")
+
+#michigan <- readVcf("/scratch/itolosana/impute/new_michigan_imputation/final_michigan_chr17.vcf.gz", "hg19")
+#minimac <- readVcf("/scratch/itolosana/impute/new_minimac_imputation/final_minimac_chr17.vcf.gz", "hg19")
+```
+
+
+Data exploration
+```{r}
+michigan
+minimac
+```
+
+
+## DS values
+Store the DS values in new variables and plot histograms to see the distribution in each imputation
+```{r}
+DS_michigan <- geno(michigan)$DS
+DS_minimac <- geno(minimac)$DS
+
+par(mfrow=c(1,2))
+HIST_MICHIGAN <- hist(DS_michigan, breaks=seq(0, 2, by=0.05), main="DS values (Michigan Imputation Server)", xlab="DS")
+HIST_MINIMAC <- hist(DS_minimac, breaks=seq(0, 2, by=0.05), main="DS values (Minimac3)", xlab="DS")
+
+HIST_MICHIGAN
+HIST_MINIMAC
+```
+
+
+Get SNPs and individuals present in both methods
+```{r}
+DS_rows <- intersect(rownames(DS_michigan), rownames(DS_minimac))
+DS_col <- intersect(colnames(DS_michigan), colnames(DS_minimac))
+
+DS_michigan_common <- DS_michigan[DS_rows,DS_col]
+DS_minimac_common <- DS_minimac[DS_rows,DS_col]
+```
+
+
+Calculate DS correlation by individuals
+```{r}
+cor_by_ind <- mapply(cor, as.data.frame(DS_michigan_common),
+                          as.data.frame(DS_minimac_common))
+
+
+min(cor_by_ind)
+max(cor_by_ind)
+mean(cor_by_ind)
+sum(cor_by_ind > 0.97)/length(cor_by_ind)
+sum(cor_by_ind > 0.99)/length(cor_by_ind)
+```
+
+
+Histogram of the DS correlation values by individuals
+```{r}
+par(mfrow=c(1,1))
+CORR_HIST <- hist(cor_by_ind, breaks=seq(0.9, 1, by=0.002), main="DS correlation values by individuals", xlab="DS correlation")
+CORR_HIST
+```
+
+
+## R^2^
+
+Create new data frame with the R^2^ values from each imputation to compare graphically
+```{r}
+rsq <- c(info(michigan)$R2, info(minimac)$R2)
+ismich <- rep(TRUE, length(info(michigan)$R2))
+ismich <- c(ismich, rep(FALSE, length(info(minimac)$R2)))
+comparison <- data.frame(rsq, ismich)
+```
+
+
+Density and histogram plots comparing the RS2 values in both methods
+```{r}
+library(ggpubr)
+ggdensity(comparison, x = "rsq",
+          add = "mean", rug = TRUE,
+          color = "ismich", fill = "ismich",
+          palette = c("#00AFBB", "#E7B800"))
+
+#gghistogram(comparison, x = "rsq",
+#            add = "mean", rug = TRUE,
+#            color = "ismich", fill = "ismich",
+#            palette = c("#00AFBB", "#E7B800"))
+
+par(mfrow=c(1,2))
+HIST_R2_MICHIGAN <- hist(info(michigan)$R2, breaks=seq(0.5, 1, by=0.02), main="Michigan Imputation Server", xlab="DS values")
+HIST_R2_MINIMAC <- hist(info(michigan)$R2, breaks=seq(0.5, 1, by=0.02), main="Minimac3", xlab="DS values")
+# From 0.5 to 1 because we selected all the snps with r2 higher than 0.5
+```
+
+
+## Genotype predictions
+Convert genotypes into matrix
+```{r}
+gen_michigan <- genotypeToSnpMatrix(michigan)
+matrix_gen_michigan <- t(as(gen_michigan$genotype, "character"))
+
+gen_minimac <- genotypeToSnpMatrix(minimac)
+matrix_gen_minimac <- t(as(gen_minimac$genotype, "character"))
+```
+
+
+Compare the genotype predictions with each method by individuals
+```{r}
+common_rows <- intersect(rownames(matrix_gen_michigan), rownames(matrix_gen_minimac))
+common_col <- intersect(colnames(matrix_gen_michigan), colnames(matrix_gen_minimac))
+
+matrix_common_michigan <- matrix_gen_michigan[common_rows, common_col]
+matrix_common_minimac <- matrix_gen_minimac[common_rows, common_col]
+
+perc_by_ind <- c()
+
+for (i in common_col){
+  genotype_by_ind <- c(matrix_common_michigan[,i] == matrix_common_minimac[,i])
+  perc_by_ind <- c(perc_by_ind, mean(genotype_by_ind))
+}
+
+
+min(perc_by_ind)
+max(perc_by_ind)
+mean(perc_by_ind)
+sum(perc_by_ind > 0.95)/length(perc_by_ind)
+sum(perc_by_ind > 0.98)/length(perc_by_ind)
+sum(perc_by_ind > 0.99)/length(perc_by_ind)
+```
+
+
+Plot histogram of the genotypes equally predicted by individuals in both methods
+```{r}
+GENO_HIST <- hist(perc_by_ind, breaks=seq(0.9, 1, by=0.002), main="Histogram: % of SNPs genotypes equally predicted with Michigan and Minimac3", xlab="% of equally predicted genotypes")
+GENO_HIST
+```
+
+
+
+# scoreInvHap
+```{r}
+library(scoreInvHap)
+data("Refs")
+# Check which is the inversion we are comparing
+ref <- Refs$inv8p23.1
+data("SNPsR2")
+R2s <- SNPsR2$inv8p23.1
+data("hetRefs")
+hRefs <- hetRefs$inv8p23.1
+```
+
+
+Calling inversions
+```{r}
+library(BiocParallel)
+michigan_inv <- scoreInvHap(SNPlist = michigan, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+# 15-20 nucleos
+michigan_inv
+
+minimac_inv <- scoreInvHap(SNPlist = minimac, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+minimac_inv
+
+scoreinvhap_table <- table(Michigan = classification(michigan_inv)[sort(names(classification(michigan_inv)))], 
+      Minimac = classification(minimac_inv)[sort(names(classification(minimac_inv)))])
+
+scoreinvhap_table
+sum(diag(scoreinvhap_table))/sum(scoreinvhap_table)
+
+#classification(minimac_inv)[sort(names(classification(minimac_inv)))]
+```
+
+
+Comparison of the results for both imputation methods
+```{r}
+par(mfrow=c(1,2))
+hist(maxscores(michigan_inv), breaks=seq(0, 1, by=0.05), main="Maxscores scoreInHap (Michigan imputation)", xlab="Maxscores")
+hist(maxscores(minimac_inv), breaks=seq(0, 1, by=0.05), main="Maxscores scoreInvHap (Minimac imputation)", xlab="Maxscores")
+
+# Calculate scores correlation by individuals
+score_corr <- mapply(cor, as.data.frame(scores(michigan_inv)[sort(rownames(scores(michigan_inv))),]),
+                          as.data.frame(scores(minimac_inv)[sort(rownames(scores(minimac_inv))),]))
+
+#min(diag(cor(scores(michigan_inv)[sort(rownames(scores(michigan_inv))),], scores(minimac_inv)[sort(rownames(scores(minimac_inv))),])))
+
+par(mfrow=c(1,1))
+SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0, 1, by=0.05), main="Score correlation by individuals", xlab="Score correlation")
+SCORE_CORR_HIST
+
+par(mfrow=c(1,2))
+hist(diffscores(michigan_inv), breaks=seq(0, 1, by=0.05), main="Difference scores - scoreInHap (Michigan imputation)", xlab="Number of scores")
+hist(diffscores(minimac_inv), breaks=seq(0, 1, by=0.05), main="Difference score - scoreInvHap (Minimac imputation)", xlab="Number of scores")
+
+
+# Number of scores used
+mean(numSNPs(michigan_inv))
+max(numSNPs(michigan_inv))
+min(numSNPs(michigan_inv))
+
+mean(numSNPs(minimac_inv))
+max(numSNPs(minimac_inv))
+min(numSNPs(minimac_inv))
+
+
+length(classification(michigan_inv))
+length(classification(michigan_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(michigan_inv, minDiff = 0.1, callRate = 0.9))/length(classification(michigan_inv))
+length(classification(minimac_inv))
+length(classification(minimac_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(minimac_inv, minDiff = 0.1, callRate = 0.9))/length(classification(minimac_inv))
+```
+
+# InvClust
+(Run the InversionNGSutils.R script to load all the functions)
+```{r}
+source("InversionNGSutils.R")
+
+michigan_invclust <- computeInvClust(range = GRanges(c(r="17:43661775-44372665")), vcffile = "/scratch/itolosana/impute/new_michigan_imputation/final_michigan_chr17.vcf.gz")
+plotInv(michigan_invclust, classification = classification(michigan_inv))
+
+minimac_invclust <- computeInvClust(range = GRanges(c(r="17:43661775-44372665")), vcffile = "/scratch/itolosana/impute/new_minimac_imputation/final_minimac_chr17.vcf.gz")
+plotInv(minimac_invclust, classification = classification(minimac_inv))
+```
+
