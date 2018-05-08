@@ -105,5 +105,28 @@ hist(SNPsR2$inv7p11.2[rownames(nofilter_minimac_7)], breaks=seq(0, 1, by=0.02), 
 cor(info(nofilter_minimac_7)[snps_minimac_7,]$R2, SNPsR2$inv7p11.2[snps_minimac_7])
 
 
+library(scoreInvHap)
+data("Refs")
+# Check which is the inversion we are comparing
+ref <- Refs$inv7p11.2
+data("SNPsR2")
+R2s <- SNPsR2$inv7p11.2
+data("hetRefs")
+hRefs <- hetRefs$inv7p11.2
+
+library(BiocParallel)
+
+nofilter_minimac_inv_7 <- scoreInvHap(SNPlist = nofilter_minimac_7, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+
+nofilter_michigan_inv_7 <- scoreInvHap(SNPlist = nofilter_michigan_7, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+
+
+source("InversionNGSutils.R")
+
+nofilter_minimac_invclust_7 <- computeInvClust(range = GRanges(c(r="7:54290974-54386821")), vcffile = "/scratch/itolosana/impute/new_minimac_imputation/nofilter_invreg_minimac_chr7.vcf.gz")
+plotInv(minimac_invclust, classification = classification(minimac_inv))
+
+
+
 ```
 
