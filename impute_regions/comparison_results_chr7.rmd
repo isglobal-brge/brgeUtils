@@ -28,8 +28,8 @@ DS correlation by individuals
 min(cor_by_ind)
 max(cor_by_ind)
 mean(cor_by_ind)
-sum(cor_by_ind > 0.95)/length(cor_by_ind)
-sum(cor_by_ind > 0.99)/length(cor_by_ind)
+mean(cor_by_ind > 0.95)
+mean(cor_by_ind > 0.99)
 ```
 
 
@@ -62,8 +62,8 @@ Compare the genotype predictions with each method by individuals. "perc_by_ind" 
 min(perc_by_ind)
 max(perc_by_ind)
 mean(perc_by_ind)
-sum(perc_by_ind > 0.95)/length(perc_by_ind)
-sum(perc_by_ind > 0.99)/length(perc_by_ind)
+mean(perc_by_ind > 0.95)
+mean(perc_by_ind > 0.99)
 ```
 
 
@@ -142,4 +142,30 @@ Minimac:
 ```{r}
 plotInv(minimac_invclust, classification = classification(minimac_inv))
 ```
+
+
+# No filtered imputed data
+
+```{r}
+
+ggplot() +
+  geom_point(aes(x = info(nofilter_minimac_7)[snps_minimac_7,]$R2, 
+                 y = SNPsR2$inv7p11.2[snps_minimac_7]), 
+                alpha = 0.5) +
+  geom_vline(aes(xintercept=0.5), colour="red") +
+  ggtitle("Minimac chr 7") +
+  xlab("Imputation R2") +
+  ylab("scoreInvHap R2")
+
+
+
+par(mfrow=c(1,2))
+hist(SNPsR2$inv7p11.2[rownames(minimac_chr7)], breaks=seq(0, 1, by=0.02), main="Filtered chr7", xlab="scoreInvHapR2")
+hist(SNPsR2$inv7p11.2[rownames(nofilter_minimac_7)], breaks=seq(0, 1, by=0.02), main="No filtered chr7", xlab="scoreInvHapR2")
+
+
+cor(info(nofilter_minimac_7)[snps_minimac_7,]$R2, SNPsR2$inv7p11.2[snps_minimac_7])
+```
+
+
 
