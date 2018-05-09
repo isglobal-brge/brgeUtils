@@ -107,7 +107,6 @@ cor(info(nofilter_minimac_7)[snps_minimac_7,]$R2, SNPsR2$inv7p11.2[snps_minimac_
 
 library(scoreInvHap)
 data("Refs")
-# Check which is the inversion we are comparing
 ref <- Refs$inv7p11.2
 data("SNPsR2")
 R2s <- SNPsR2$inv7p11.2
@@ -124,9 +123,44 @@ nofilter_michigan_inv_7 <- scoreInvHap(SNPlist = nofilter_michigan_7, SNPsR2 = R
 source("InversionNGSutils.R")
 
 nofilter_minimac_invclust_7 <- computeInvClust(range = GRanges(c(r="7:54290974-54386821")), vcffile = "/scratch/itolosana/impute/new_minimac_imputation/nofilter_invreg_minimac_chr7.vcf.gz")
-plotInv(minimac_invclust, classification = classification(minimac_inv))
+
+
+nofilter_michigan_invclust_7 <- computeInvClust(range = GRanges(c(r="7:54290974-54386821")), vcffile = "/scratch/itolosana/impute/new_michigan_imputation/nofilter_invreg_michigan_chr7.vcf.gz")
 
 
 
+
+
+
+
+library(scoreInvHap)
+data("Refs")
+ref <- Refs$inv8p23.1
+data("SNPsR2")
+R2s <- SNPsR2$inv8p23.1
+data("hetRefs")
+hRefs <- hetRefs$inv8p23.1
+
+nofilter_minimac_inv_8 <- scoreInvHap(SNPlist = nofilter_minimac_8, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+#nofilter_michigan_inv_8 <- scoreInvHap(SNPlist = nofilter_michigan_8, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+nofilter_minimac_invclust_8 <- computeInvClust(range = GRanges(c(r="8:8055789-11980649")), vcffile = "/scratch/itolosana/impute/new_minimac_imputation/nofilter_invreg_minimac_chr8.vcf.gz")
+#nofilter_michigan_invclust_8 <- computeInvClust(range = GRanges(c(r="8:8055789-11980649")), vcffile = "/scratch/itolosana/impute/new_michigan_imputation/nofilter_invreg_michigan_chr8.vcf.gz")
+
+
+
+
+
+library(scoreInvHap)
+data("Refs")
+ref <- Refs$inv17q21.31
+data("SNPsR2")
+R2s <- SNPsR2$inv17q21.31
+data("hetRefs")
+hRefs <- hetRefs$inv17q21.31
+
+nofilter_minimac_inv_17 <- scoreInvHap(SNPlist = nofilter_minimac_17, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+#nofilter_michigan_inv_17 <- scoreInvHap(SNPlist = nofilter_michigan_17, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+nofilter_minimac_invclust_17 <- computeInvClust(range = GRanges(c(r="17:43661775-44372665")), vcffile = "/scratch/itolosana/impute/new_minimac_imputation/nofilter_invreg_minimac_chr17.vcf.gz")
+#nofilter_michigan_invclust_8 <- computeInvClust(range = GRanges(c(r="17:43661775-44372665")), vcffile = "/scratch/itolosana/impute/new_michigan_imputation/nofilter_invreg_michigan_chr8.vcf.gz")
 ```
 
