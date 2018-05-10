@@ -1,5 +1,5 @@
 ---
-title: "Comparison: Michigan Imputation Server / Shapeit+Minimac3 (Chromosome 7)"
+title: "Comparison: Michigan Imputation Server / Shapeit+Minimac3 (Chromosome 8)"
 author: "Ignacio Tolosana"
 output: pdf_document
 ---
@@ -13,33 +13,34 @@ library(snpStats)
 library(scoreInvHap)
 library(BiocParallel)
 library(ggpubr)
+library(invClust)
 source("InversionNGSutils.R")
 
-load(file = "michigan_chr7.rda")
-load(file = "michigan_invclust_chr7.rda")
-load(file = "michigan_scoreinvhap_chr7.rda")
-load(file = "minimac_chr7.rda")
-load(file = "minimac_invclust_chr7.rda")
-load(file = "minimac_scoreinvhap_chr7.rda")
-load(file = "nofilter_michigan_7.rda")
-load(file = "nofilter_michigan_inv_7.rda")
-load(file = "nofilter_michigan_invclust_7.rda")
-load(file = "nofilter_minimac_7.rda")
-load(file = "nofilter_minimac_inv_7.rda")
-load(file = "nofilter_minimac_invclust_7.rda")
+load(file = "michigan_chr8.rda")
+load(file = "michigan_invclust_chr8.rda")
+load(file = "michigan_scoreinvhap_chr8.rda")
+load(file = "minimac_chr8.rda")
+load(file = "minimac_invclust_chr8.rda")
+load(file = "minimac_scoreinvhap_chr8.rda")
+#load(file = "nofilter_michigan_8.rda")
+#load(file = "nofilter_michigan_inv_8.rda")
+#load(file = "nofilter_michigan_invclust_8.rda")
+load(file = "nofilter_minimac_8.rda")
+load(file = "nofilter_minimac_inv_8.rda")
+#load(file = "nofilter_minimac_invclust_8.rda")
 ```
 
 ## Imputed data exploration
 ```{r}
-michigan_chr7
-minimac_chr7
+michigan_chr8
+minimac_chr8
 ```
 
 
 ## DS values
 ```{r echo=FALSE}
-DS_michigan <- geno(michigan_chr7)$DS
-DS_minimac <- geno(minimac_chr7)$DS
+DS_michigan <- geno(michigan_chr8)$DS
+DS_minimac <- geno(minimac_chr8)$DS
 ```
 
 ```{r}
@@ -79,7 +80,7 @@ mean(cor_by_ind > 0.99)
 ```{r}
 # Histogram of the DS correlation values by individuals
 par(mfrow=c(1,1))
-CORR_HIST <- hist(cor_by_ind, breaks=seq(0.48, 1, by=0.01), 
+CORR_HIST <- hist(cor_by_ind, breaks=seq(0.9, 1, by=0.002), 
                   main="DS correlation values by individuals", xlab="DS correlation")
 ```
 
@@ -87,9 +88,9 @@ CORR_HIST <- hist(cor_by_ind, breaks=seq(0.48, 1, by=0.01),
 
 ## R^2^
 ```{r echo=FALSE}
-rsq <- c(info(michigan_chr7)$R2, info(minimac_chr7)$R2)
-ismich <- rep("Michigan", length(info(michigan_chr7)$R2))
-ismich <- c(ismich, rep("Minimac", length(info(minimac_chr7)$R2)))
+rsq <- c(info(michigan_chr8)$R2, info(minimac_chr8)$R2)
+ismich <- rep("Michigan", length(info(michigan_chr8)$R2))
+ismich <- c(ismich, rep("Minimac", length(info(minimac_chr8)$R2)))
 comparison <- data.frame(rsq, ismich)
 ```
 
@@ -99,15 +100,15 @@ Density and histogram plots comparing the RS2 values in both methods ("ismich = 
 ggdensity(comparison, x = "rsq",
           add = "mean", rug = TRUE,
           color = "ismich", fill = "ismich",
-          palette = c("#E7B800", "#00AFBB"),
+          palette = c("#E8B800", "#00AFBB"),
           legend.title = c(""), 
           xlab = ("Imputation R2"),
           ylab = ("Density"))
 
 par(mfrow=c(1,2))
-HIST_R2_MICHIGAN <- hist(info(michigan_chr7)$R2, breaks=seq(0.5, 1, by=0.02), 
+HIST_R2_MICHIGAN <- hist(info(michigan_chr8)$R2, breaks=seq(0.5, 1, by=0.02), 
                          main="Michigan", xlab="Imputation R2")
-HIST_R2_MINIMAC <- hist(info(michigan_chr7)$R2, breaks=seq(0.5, 1, by=0.02), 
+HIST_R2_MINIMAC <- hist(info(michigan_chr8)$R2, breaks=seq(0.5, 1, by=0.02), 
                         main="Minimac", xlab="Imputation R2")
 ```
 
@@ -117,10 +118,10 @@ HIST_R2_MINIMAC <- hist(info(michigan_chr7)$R2, breaks=seq(0.5, 1, by=0.02),
 
 ```{r echo=FALSE, warning=FALSE}
 #Convert genotypes into matrix
-gen_michigan <- genotypeToSnpMatrix(michigan_chr7)
+gen_michigan <- genotypeToSnpMatrix(michigan_chr8)
 matrix_gen_michigan <- t(as(gen_michigan$genotype, "character"))
 
-gen_minimac <- genotypeToSnpMatrix(minimac_chr7)
+gen_minimac <- genotypeToSnpMatrix(minimac_chr8)
 matrix_gen_minimac <- t(as(gen_minimac$genotype, "character"))
 
 #Compare the genotype predictions with each method by individuals
@@ -152,7 +153,7 @@ mean(perc_by_ind > 0.99)
 # Plot histogram of the genotypes equally predicted (BestGuess) by individuals 
 # in both methods
 par(mfrow=c(1,1))
-GENO_HIST <- hist(perc_by_ind, breaks=seq(0.7, 1, by=0.01), 
+GENO_HIST <- hist(perc_by_ind, breaks=seq(0.8, 1, by=0.005), 
                   main="SNPs (genotypes) equally predicted with Michigan and Minimac3", 
                   xlab="% of equally predicted genotypes")
 ```
@@ -164,22 +165,22 @@ GENO_HIST <- hist(perc_by_ind, breaks=seq(0.7, 1, by=0.01),
 ```{r echo=FALSE}
 #Load reference data scoreInvHap
 data("Refs")
-ref <- Refs$inv7p11.2
+ref <- Refs$inv8p23.1
 data("SNPsR2")
-R2s <- SNPsR2$inv7p11.2
+R2s <- SNPsR2$inv8p23.1
 data("hetRefs")
-hRefs <- hetRefs$inv7p11.2
+hRefs <- hetRefs$inv8p23.1
 ```
 
 Predicted inversions with scoreInvHap
 ```{r}
-michigan_inv_chr7
-minimac_inv_chr7
+michigan_inv_chr8
+minimac_inv_chr8
 ```
 
 ```{r echo=FALSE}
-scoreinvhap_table <- table(Michigan = classification(michigan_inv_chr7)[sort(names(classification(michigan_inv_chr7)))], 
-      Minimac = classification(minimac_inv_chr7)[sort(names(classification(minimac_inv_chr7)))])
+scoreinvhap_table <- table(Michigan = classification(michigan_inv_chr8)[sort(names(classification(michigan_inv_chr8)))], 
+      Minimac = classification(minimac_inv_chr8)[sort(names(classification(minimac_inv_chr8)))])
 ```
 
 ```{r}
@@ -192,14 +193,14 @@ sum(diag(scoreinvhap_table))/sum(scoreinvhap_table)
 ```{r}
 # Comparison of the results for both imputation methods
 par(mfrow=c(1,2))
-hist(maxscores(michigan_inv_chr7), breaks=seq(0, 1, by=0.05), main="Michigan", xlab="Maxscores")
-hist(maxscores(minimac_inv_chr7), breaks=seq(0, 1, by=0.05), main="Minimac", xlab="Maxscores")
+hist(maxscores(michigan_inv_chr8), breaks=seq(0, 1, by=0.05), main="Michigan", xlab="Maxscores")
+hist(maxscores(minimac_inv_chr8), breaks=seq(0, 1, by=0.05), main="Minimac", xlab="Maxscores")
 ```
 
 ```{r echo=FALSE}
 # Calculate scores correlation by individuals
-score_corr <- mapply(cor, as.data.frame(scores(michigan_inv_chr7)[sort(rownames(scores(michigan_inv_chr7))),]),
-                          as.data.frame(scores(minimac_inv_chr7)[sort(rownames(scores(minimac_inv_chr7))),]))
+score_corr <- mapply(cor, as.data.frame(scores(michigan_inv_chr8)[sort(rownames(scores(michigan_inv_chr8))),]),
+                          as.data.frame(scores(minimac_inv_chr8)[sort(rownames(scores(minimac_inv_chr8))),]))
 ```
 
 ```{r}
@@ -208,7 +209,7 @@ min(score_corr)
 max(score_corr)
 mean(score_corr)
 par(mfrow=c(1,1))
-SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0.9, 1, by=0.005), 
+SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0.95, 1, by=0.001), 
                         main="Score correlation by individuals", 
                         xlab="Score correlation")
 ```
@@ -217,29 +218,29 @@ SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0.9, 1, by=0.005),
 # Difference score between the highest similarity score and the second highest, 
 # in both imputation methods
 par(mfrow=c(1,2))
-hist(diffscores(michigan_inv_chr7), breaks=seq(0, 1, by=0.05), 
+hist(diffscores(michigan_inv_chr8), breaks=seq(0, 1, by=0.05), 
      main="Michigan", xlab="Difference score")
-hist(diffscores(minimac_inv_chr7), breaks=seq(0, 1, by=0.05), 
+hist(diffscores(minimac_inv_chr8), breaks=seq(0, 1, by=0.05), 
      main="Minimac", xlab="Difference score")
 ```
 
 
 ```{r}
 # Numbers of scores used
-mean(numSNPs(michigan_inv_chr7))
-mean(numSNPs(minimac_inv_chr7))
+mean(numSNPs(michigan_inv_chr8))
+mean(numSNPs(minimac_inv_chr8))
 ```
 
 ```{r}
 # Number of samples in both imputation methods before and after QC filtering
-length(classification(michigan_inv_chr7))
-length(classification(michigan_inv_chr7, minDiff = 0.1, callRate = 0.9))
-length(classification(michigan_inv_chr7, minDiff = 0.1, callRate = 0.9))/
-  length(classification(michigan_inv_chr7))
-length(classification(minimac_inv_chr7))
-length(classification(minimac_inv_chr7, minDiff = 0.1, callRate = 0.9))
-length(classification(minimac_inv_chr7, minDiff = 0.1, callRate = 0.9))/
-  length(classification(minimac_inv_chr7))
+length(classification(michigan_inv_chr8))
+length(classification(michigan_inv_chr8, minDiff = 0.1, callRate = 0.9))
+length(classification(michigan_inv_chr8, minDiff = 0.1, callRate = 0.9))/
+  length(classification(michigan_inv_chr8))
+length(classification(minimac_inv_chr8))
+length(classification(minimac_inv_chr8, minDiff = 0.1, callRate = 0.9))
+length(classification(minimac_inv_chr8, minDiff = 0.1, callRate = 0.9))/
+  length(classification(minimac_inv_chr8))
 ```
 
 
@@ -250,60 +251,56 @@ length(classification(minimac_inv_chr7, minDiff = 0.1, callRate = 0.9))/
 ```{r}
 # Michigan
 par(mfrow=c(1,1))
-plotInv(michigan_invclust_chr7, classification = classification(michigan_inv_chr7))
+plotInv(michigan_invclust_chr8, classification = classification(michigan_inv_chr8))
 ```
 
 
 ```{r}
 # Minimac
-plotInv(minimac_invclust_chr7, classification = classification(minimac_inv_chr7))
+plotInv(minimac_invclust_chr8, classification = classification(minimac_inv_chr8))
 ```
 
 
 # No filtered imputed data
 
 ```{r}
-nofilter_minimac_7
-nofilter_michigan_7
-nofilter_michigan_inv_7
-nofilter_minimac_inv_7
+nofilter_minimac_8
+nofilter_minimac_inv_8
 
 # Select SNPs in both elements to represent them in the plot
-snps_minimac_7 <- intersect(rownames(info(nofilter_minimac_7)), names(SNPsR2$inv7p11.2))
+snps_minimac_8 <- intersect(rownames(info(nofilter_minimac_8)), names(SNPsR2$inv8p23.1))
 
 # Plot Imputation R2 vs scoreInvHap R2 (red line = filter in the previous data)
 ggplot() +
-  geom_point(aes(x = info(nofilter_minimac_7)[snps_minimac_7,]$R2, 
-                 y = SNPsR2$inv7p11.2[snps_minimac_7]), 
+  geom_point(aes(x = info(nofilter_minimac_8)[snps_minimac_8,]$R2, 
+                 y = SNPsR2$inv8p23.1[snps_minimac_8]), 
                 alpha = 0.2) +
   geom_vline(aes(xintercept=0.5), colour="red") +
-  ggtitle("Minimac chr 7") +
+  ggtitle("Minimac chr 8") +
   xlab("Imputation R2") +
   ylab("scoreInvHap R2")
-
-hist(classification(nofilter_minimac_inv_7), 
-     main="No filtered chr7", xlab="Genotype")
 
 
 # Histograms of scoreInvHap R2 in the filtered imputed data and in the NO filtered imputed data
 par(mfrow=c(1,2))
-hist(SNPsR2$inv7p11.2[rownames(minimac_chr7)], breaks=seq(0, 1, by=0.02), 
-     main="Filtered chr7", xlab="scoreInvHapR2")
-hist(SNPsR2$inv7p11.2[rownames(nofilter_minimac_7)], breaks=seq(0, 1, by=0.02), 
-     main="No filtered chr7", xlab="scoreInvHapR2")
+hist(SNPsR2$inv8p23.1[rownames(minimac_chr8)], breaks=seq(0, 1, by=0.02), 
+     main="Filtered chr8", xlab="scoreInvHapR2")
+hist(SNPsR2$inv8p23.1[rownames(nofilter_minimac_8)], breaks=seq(0, 1, by=0.02), 
+     main="No filtered chr8", xlab="scoreInvHapR2")
 
 #Correlation between Imputation R2 and scoreInvHap R2 (NO filtered data)
-cor(info(nofilter_minimac_7)[snps_minimac_7,]$R2, SNPsR2$inv7p11.2[snps_minimac_7])
+cor(info(nofilter_minimac_8)[snps_minimac_8,]$R2, SNPsR2$inv8p23.1[snps_minimac_8])
+```
+
+```{r echo=FALSE}
+scoreinvhap_table_filt <- table(No_filtered = classification(nofilter_minimac_inv_8)[sort(names(classification(nofilter_minimac_inv_8)))], 
+      Filtered = classification(minimac_inv_chr8)[sort(names(classification(minimac_inv_chr8)))])
 ```
 
 ```{r}
-# invClust plot of the NO filtered imputed data (minimac)
-plotInv(nofilter_minimac_invclust_7, 
-        classification = classification(nofilter_minimac_inv_7))
-# invClust plot of the NO filtered imputed data (michigan)
-# (invClust only used 96 SNPs in this case)
-plotInv(nofilter_michigan_invclust_7, 
-        classification = classification(nofilter_michigan_inv_7))
+# Comparison table scoreInvHap with filtered and no filtered data
+scoreinvhap_table_filt
+sum(diag(scoreinvhap_table_filt))/sum(scoreinvhap_table_filt)
 ```
 
 
