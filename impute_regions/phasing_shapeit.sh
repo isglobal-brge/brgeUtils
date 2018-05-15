@@ -1,21 +1,38 @@
 #!/bin/bash
 
+
+
+#numberind=$(wc -l $data.fam | cut -d' ' -f1)
+#if [[ $numberind > 200 ]]
+#then
+#  echo "The file has more than 200 individuals"
+#  echo "$numberind"
+#else
+#  echo "The file has NO more than 200 individuals"
+#  echo "$numberind"
+#fi
+
 counter=0
 
 for i in ${chr[@]}
 do
-  shapeit -B $data_chr${chr[$counter]}_filtered \
+  shapeit -B ${chr[$counter]}_${data}_filtered \
         -M genetic_map_chr${chr[$counter]}_combined_b37.txt \
-        -O $data_chr${chr[$counter]}_filtered_phased \
+        -O ${chr[$counter]}_${data}_filtered_phased \
         --thread $cpus
         
   shapeit -convert \
-        --input-haps $data_chr${chr[$counter]}_filtered_phased \
-        --output-vcf $data_chr${chr[$counter]}_filtered_phased.vcf
+        --input-haps ${chr[$counter]}_${data}_filtered_phased \
+        --output-vcf ${chr[$counter]}_${data}_filtered_phased.vcf
         
   counter=$counter+1
 done 
 
+echo -e "\n\nPhasing finished\n\n"
+
+#shapeit --input-vcf gwas.vcf \
+#        -M genetic_map.txt \
+#        -O gwas.phased
 
 ################ I SHOULD HAVE TWO OPTIONS: >200 AND < 200 SAMPLES
 
@@ -33,3 +50,5 @@ done
 #        --input-ref reference.haplotypes.gz reference.legend.gz reference.sample \
 #        --exclude-snp gwas.alignments.strand.exclude \
 #        -O Gwas.Chr20.Phased.Output
+
+
