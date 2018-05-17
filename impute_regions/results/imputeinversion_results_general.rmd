@@ -1,7 +1,7 @@
 ---
 title: '"imputeinversion" results'
 author: "Ignacio Tolosana"
-subtitle: "Chromosome 7"
+subtitle: "Chromosome 17"
 output: html_document
 ---
 
@@ -15,22 +15,19 @@ library(scoreInvHap)
 library(BiocParallel)
 library(ggpubr)
 source("InversionNGSutils.R")
-
-byregion_7 <- readVcf("/scratch/itolosana/function_impute/7_subset_imputed_byregion_final.vcf.gz", "hg19")
-whole_7 <- readVcf("/scratch/itolosana/function_impute/7_subset_imputed_final.vcf.gz", "hg19")
 ```
 
 ## Imputed data exploration
 ```{r}
-byregion_7
-whole_7
+byregion
+whole
 ```
 
 
 ## DS values
 ```{r echo=FALSE}
-DS_byregion <- geno(byregion_7)$DS
-DS_whole <- geno(whole_7)$DS
+DS_byregion <- geno(byregion)$DS
+DS_whole <- geno(whole)$DS
 ```
 
 ```{r}
@@ -70,7 +67,7 @@ mean(cor_by_ind > 0.99)
 ```{r}
 # Histogram of the DS correlation values by individuals
 par(mfrow=c(1,1))
-CORR_HIST <- hist(cor_by_ind, breaks=seq(0.88, 1, by=0.002), 
+CORR_HIST <- hist(cor_by_ind, breaks=seq(0.85, 1, by=0.002), 
                   main="DS correlation values by individuals", xlab="DS correlation")
 ```
 
@@ -78,9 +75,9 @@ CORR_HIST <- hist(cor_by_ind, breaks=seq(0.88, 1, by=0.002),
 
 ## R^2^
 ```{r echo=FALSE}
-rsq <- c(info(byregion_7)$R2, info(whole_7)$R2)
-ismich <- rep("ByRegion", length(info(byregion_7)$R2))
-ismich <- c(ismich, rep("WholeChr", length(info(whole_7)$R2)))
+rsq <- c(info(byregion)$R2, info(whole)$R2)
+ismich <- rep("ByRegion", length(info(byregion)$R2))
+ismich <- c(ismich, rep("WholeChr", length(info(whole)$R2)))
 comparison <- data.frame(rsq, ismich)
 ```
 
@@ -96,9 +93,9 @@ ggdensity(comparison, x = "rsq",
           ylab = ("Density"))
 
 par(mfrow=c(1,2))
-HIST_R2_BYREGION <- hist(info(byregion_7)$R2, breaks=seq(0, 1, by=0.05), 
+HIST_R2_BYREGION <- hist(info(byregion)$R2, breaks=seq(0, 1, by=0.05), 
                          main="ByRegion", xlab="Imputation R2")
-HIST_R2_WHOLE <- hist(info(whole_7)$R2, breaks=seq(0, 1, by=0.05), 
+HIST_R2_WHOLE <- hist(info(whole)$R2, breaks=seq(0, 1, by=0.05), 
                         main="Whole", xlab="Imputation R2")
 ```
 
@@ -108,10 +105,10 @@ HIST_R2_WHOLE <- hist(info(whole_7)$R2, breaks=seq(0, 1, by=0.05),
 
 ```{r echo=FALSE, warning=FALSE}
 #Convert genotypes into matrix
-gen_byregion <- genotypeToSnpMatrix(byregion_7)
+gen_byregion <- genotypeToSnpMatrix(byregion)
 matrix_gen_byregion <- t(as(gen_byregion$genotype, "character"))
 
-gen_whole <- genotypeToSnpMatrix(whole_7)
+gen_whole <- genotypeToSnpMatrix(whole)
 matrix_gen_whole <- t(as(gen_whole$genotype, "character"))
 
 #Compare the genotype predictions with each method by individuals
@@ -162,20 +159,20 @@ data("hetRefs")
 hRefs <- hetRefs$inv7p11.2
 
 
-byregion_inv_7 <- scoreInvHap(SNPlist = byregion_7, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+byregion_inv <- scoreInvHap(SNPlist = byregion, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
 
-whole_inv_7 <- scoreInvHap(SNPlist = whole_7, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+whole_inv <- scoreInvHap(SNPlist = whole, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
 ```
 
 Predicted inversions with scoreInvHap
 ```{r}
-byregion_inv_7
-whole_inv_7
+byregion_inv
+whole_inv
 ```
 
 ```{r echo=FALSE}
-scoreinvhap_table <- table(ByRegion = classification(byregion_inv_7)[sort(names(classification(byregion_inv_7)))], 
-      WholeChr = classification(whole_inv_7)[sort(names(classification(whole_inv_7)))])
+scoreinvhap_table <- table(ByRegion = classification(byregion_inv)[sort(names(classification(byregion_inv)))], 
+      WholeChr = classification(whole_inv)[sort(names(classification(whole_inv)))])
 ```
 
 ```{r}
@@ -189,14 +186,14 @@ kappa(scoreinvhap_table)
 ```{r}
 # Comparison of the results for both imputation methods
 par(mfrow=c(1,2))
-hist(maxscores(byregion_inv_7), breaks=seq(0, 1, by=0.05), main="ByRegion", xlab="Maxscores")
-hist(maxscores(whole_inv_7), breaks=seq(0, 1, by=0.05), main="WholeChr", xlab="Maxscores")
+hist(maxscores(byregion_inv), breaks=seq(0, 1, by=0.05), main="ByRegion", xlab="Maxscores")
+hist(maxscores(whole_inv), breaks=seq(0, 1, by=0.05), main="WholeChr", xlab="Maxscores")
 ```
 
 ```{r echo=FALSE}
 # Calculate scores correlation by individuals
-score_corr <- mapply(cor, as.data.frame(scores(byregion_inv_7)[sort(rownames(scores(byregion_inv_7))),]),
-                          as.data.frame(scores(whole_inv_7)[sort(rownames(scores(whole_inv_7))),]))
+score_corr <- mapply(cor, as.data.frame(scores(byregion_inv)[sort(rownames(scores(byregion_inv))),]),
+                          as.data.frame(scores(whole_inv)[sort(rownames(scores(whole_inv))),]))
 ```
 
 ```{r}
@@ -214,32 +211,48 @@ SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0.9, 1, by=0.002),
 # Difference score between the highest similarity score and the second highest, 
 # in both imputation methods
 par(mfrow=c(1,2))
-hist(diffscores(byregion_inv_7), breaks=seq(0, 1, by=0.05), 
+hist(diffscores(byregion_inv), breaks=seq(0, 1, by=0.05), 
      main="ByRegioin", xlab="Difference score")
-hist(diffscores(whole_inv_7), breaks=seq(0, 1, by=0.05), 
+hist(diffscores(whole_inv), breaks=seq(0, 1, by=0.05), 
      main="WholeChr", xlab="Difference score")
 ```
 
 
 ```{r}
 # Numbers of scores used
-mean(numSNPs(byregion_inv_7))
-mean(numSNPs(whole_inv_7))
+mean(numSNPs(byregion_inv))
+mean(numSNPs(whole_inv))
 ```
 
 ```{r}
 # Number of samples in both imputation methods before and after QC filtering
-length(classification(byregion_inv_7))
-length(classification(byregion_inv_7, minDiff = 0.1, callRate = 0.9))
-length(classification(byregion_inv_7, minDiff = 0.1, callRate = 0.9))/
-  length(classification(byregion_inv_7))
-length(classification(whole_inv_7))
-length(classification(whole_inv_7, minDiff = 0.1, callRate = 0.9))
-length(classification(whole_inv_7, minDiff = 0.1, callRate = 0.9))/
-  length(classification(whole_inv_7))
+length(classification(byregion_inv))
+length(classification(byregion_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(byregion_inv, minDiff = 0.1, callRate = 0.9))/
+  length(classification(byregion_inv))
+length(classification(whole_inv))
+length(classification(whole_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(whole_inv, minDiff = 0.1, callRate = 0.9))/
+  length(classification(whole_inv))
 ```
 
 
 
-# Plots with invClust
+```{r}
+# Steps to compare the byregion with the nofilter_minimac
+whole <- nofilter_minimac_7
+
+whole <- whole[,colnames(byregion)]
+
+# Run the code to compare imputation
+
+noinv17 <- classification(nofilter_minimac_inv_7)[names(classification(byregion_inv_7))]
+
+table(ByRegion = classification(byregion_inv_7)[sort(names(classification(byregion_inv_7)))],
+       WholeChr = noinv17[sort(names(noinv17))])
+# And run rest of the code to compare inversion prediction
+
+```
+
+
 

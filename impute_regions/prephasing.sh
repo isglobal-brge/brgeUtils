@@ -1,34 +1,36 @@
 #!/bin/bash
 
-# Create files for imputation (Imputation preparation)
-plink --bfile $data --freq --out $data
-perl HRC-1000G-check-bim-v4.2.pl -b $data.bim -f $data.frq -r HRC.r1-1.GRCh37.wgs.mac5.sites.tab -h
 
-plink --bfile $data --exclude Exclude-$data-HRC.txt --make-bed --out TEMP1
-plink --bfile TEMP1 --update-map Chromosome-$data-HRC.txt --update-chr --make-bed --out TEMP2
-plink --bfile TEMP2 --update-map Position-$data-HRC.txt --make-bed --out TEMP3
-plink --bfile TEMP3 --flip Strand-Flip-$data-HRC.txt --make-bed --out TEMP4
-plink --bfile TEMP4 --reference-allele Force-Allele1-$data-HRC.txt --make-bed --out ${data}_updated
-rm TEMP*
+if [[ $format == plink ]] || [[ $format == PLINK ]]
+then
+  counter=0
+  for i in ${chr[@]}
+  do
+    plink --bfile ${data} \
+        --make-bed \
+        --mind 0.05 \
+        --geno 0.05 \
+        --chr ${chr[$counter]} \
+        --out ${prefix[$counter]}_${data}_filtered
+    counter=$counter+1
+  done  
+elif [[ $format == vcf ]] || [[ $format == VCF ]]
+then
+  counter=0
+  for i in ${chr[@]}
+  do
+    plink --vcf ${data}.vcf.gz \
+        --make-bed \
+        --mind 0.05 \
+        --geno 0.05 \
+        --chr ${chr[$counter]} \
+        --out ${prefix[$counter]}_${data}_filtered
+    counter=$counter+1
+  done 
+fi 
 
 
-counter=0
-
-for i in ${chr[@]}
-do
-  plink --bfile ${data}_updated \
-      --reference-allele Force-Allele1-$data-HRC.txt \
-      --make-bed \
-      --mind 0.05 \
-      --geno 0.05 \
-      --chr ${chr[$counter]} \
-      --out ${chr[$counter]}_${data}_filtered
-  
-  counter=$counter+1
-done  
-
-echo -e "\n\nPrephasing finished\n\n"
-
+. ./phasing_shapeit.sh
 
 
 
