@@ -1,0 +1,267 @@
+---
+title: '"imputeinversion" results'
+author: "Ignacio Tolosana"
+subtitle: "Chromosome 7"
+output: html_document
+---
+
+The results that are compared here are the ones obtained:
+- imputeinv: phasing and imputing the whole chromosome 7, with all the 2275 individuals, with the imputeinv program. 
+- byparts: phasing and imputing the whole chromosome 7, with all the 2275 individuals, with the parts of the imputeinv program but separated, one by one before merging them and make them a whole program.
+
+A priori, the results should be the same (because the original data used are the same, the procedures are the same...)
+
+
+# Imputation
+
+```{r echo=FALSE}
+library(VariantAnnotation)
+library(ggplot2)
+library(snpStats)
+library(scoreInvHap)
+library(BiocParallel)
+library(ggpubr)
+source("InversionNGSutils.R")
+
+imputeinv <- readVcf("/scratch/itolosana/function_impute/chromosome7_repetition_whole_process_wholechr/inv7p11.2_colorectal_hg19_imputed_final.vcf.gz", "hg19")
+byparts<- readVcf("/scratch/itolosana/imputation/new_minimac_imputation/nofilter_invreg_minimac_chr7.vcf.gz", "hg19")
+```
+
+## Imputed data exploration
+General information about the imputed data. It shows the number of SNPs imputed and the number of individuals after the quality control filter (pre-imputation)
+```{r}
+imputeinv
+byparts
+```
+
+
+## DS values
+```{r echo=FALSE}
+DS_imputeinv <- geno(imputeinv)$DS
+DS_byparts <- geno(byparts)$DS
+```
+
+DS is the Estimated Alternate Allele Dosage, and it is calculated: [P(0/1)+2*P(1/1)]
+If the estimated posterior probability of the alternate allele is 0.98 and 0.96 in each haplotype, the genotype dosage is output as 0.98 + 0.97 = 1.95. i.e.: For each SNP: if an individual is homozygous for the alternate allele, its DS estimated value would be close to 2; if an individual is heterozygous, its DS estimated value would be close to 1; and if an individual is homozygous for the reference allele, its DS estimated value would be close to 0.
+Therefore, the distribution of the DS values should be focused on 0, 1 and 2. If there are many SNPs with DS in the middle of these values, it would probably be an indication of bad imputations.
+```{r}
+# Distribution of the DS values in each imputation
+par(mfrow=c(1,2))
+HIST_IMPUTEINV <- hist(DS_imputeinv, breaks=seq(0, 2, by=0.05), 
+                      main="Imputeinv Imputation", xlab="DS values")
+HIST_BYPARTS <- hist(DS_byparts, breaks=seq(0, 2, by=0.05), 
+                     main="ByParts Imputation", xlab="DS values")
+```
+
+```{r echo=FALSE}
+#Get SNPs and individuals present in both methods
+DS_rows <- intersect(rownames(DS_imputeinv), rownames(DS_byparts))
+DS_col <- intersect(colnames(DS_imputeinv), colnames(DS_byparts))
+
+DS_imputeinv_common <- DS_imputeinv[DS_rows,DS_col]
+DS_byparts_common <- DS_byparts[DS_rows,DS_col]
+
+#Calculate DS correlation by individuals
+cor_by_ind <- mapply(cor, as.data.frame(DS_imputeinv_common),
+                          as.data.frame(DS_byparts_common))
+
+```
+
+It shows the correlation of the DS values of all the SNPs by individuals (correlation, between the two imputation methods, of the DS values of every SNP for each individual)
+```{r}
+# DS correlation by individuals
+min(cor_by_ind)
+max(cor_by_ind)
+mean(cor_by_ind)
+mean(cor_by_ind > 0.95)
+mean(cor_by_ind > 0.99)
+```
+
+Histogram of the DS correlation values explained before
+```{r}
+# Histogram of the DS correlation values by individuals
+par(mfrow=c(1,1))
+CORR_HIST <- hist(cor_by_ind, breaks=seq(0.8, 1, by=0.002), 
+                  main="DS correlation values by individuals", xlab="DS correlation")
+```
+
+
+
+## R^2^
+
+R^2^ is used as a measure of the imputation quality.
+(It is defined as the estimated value of the squared correlation between imputed genotypes and true, unobserved genotypes. Since true genotypes are not available, this calculation is based on the idea that poorly imputed genotype counts will shrink towards their expectations based on population allele frequencies alone; specifically 2p where p is the frequency of the allele being imputed)
+```{r echo=FALSE}
+rsq <- c(info(imputeinv)$R2, info(byparts)$R2)
+imputationtype <- rep("imputeinv", length(info(imputeinv)$R2))
+imputationtype <- c(imputationtype, rep("ByParts", length(info(byparts)$R2)))
+comparison <- data.frame(rsq, imputationtype)
+```
+
+Density and histogram plots comparing the RS2 values in both methods
+```{r}
+ggdensity(comparison, x = "rsq",
+          add = "mean", rug = TRUE,
+          color = "imputationtype", fill = "imputationtype",
+          palette = c("#E7B700", "#00AFBB"),
+          legend.title = c(""), 
+          xlab = ("Imputation R2"),
+          ylab = ("Density"))
+
+par(mfrow=c(1,2))
+HIST_R2_IMPUTEINV <- hist(info(imputeinv)$R2, breaks=seq(0, 1, by=0.05), 
+                         main="imputeinv", xlab="Imputation R2")
+HIST_R2_BYPARTS <- hist(info(byparts)$R2, breaks=seq(0, 1, by=0.05), 
+                        main="ByParts", xlab="Imputation R2")
+```
+
+
+## Genotype predictions
+
+```{r echo=FALSE, warning=FALSE}
+#Convert genotypes into matrix
+gen_imputeinv <- genotypeToSnpMatrix(imputeinv)
+matrix_gen_imputeinv <- t(as(gen_imputeinv$genotype, "character"))
+
+gen_byparts <- genotypeToSnpMatrix(byparts)
+matrix_gen_byparts <- t(as(gen_byparts$genotype, "character"))
+
+#Compare the genotype predictions with each method by individuals
+common_rows <- intersect(rownames(matrix_gen_imputeinv), rownames(matrix_gen_byparts))
+common_col <- intersect(colnames(matrix_gen_imputeinv), colnames(matrix_gen_byparts))
+
+matrix_common_imputeinv <- matrix_gen_imputeinv[common_rows, common_col]
+matrix_common_byparts <- matrix_gen_byparts[common_rows, common_col]
+
+perc_by_ind <- c()
+
+for (i in common_col){
+  genotype_by_ind <- c(matrix_gen_imputeinv[,i] == matrix_gen_byparts[,i])
+  perc_by_ind <- c(perc_by_ind, mean(genotype_by_ind))
+}
+```
+
+The BestGuess is the prediction of the SNP genotype. The following variable ('perc_by_ind') is the % of SNPs that are equally predicted in both methods for each individual (if all the SNPs of an individual were equally predicted during the imputation with both methods, the value of perc_by_ind for that individual will be 1; if half the SNPs of an individual were equally predicted during the imputation with both methods, the value of perc_by_ind for that individual will be 0.5).
+```{r}
+min(perc_by_ind)
+max(perc_by_ind)
+mean(perc_by_ind)
+mean(perc_by_ind > 0.95)
+mean(perc_by_ind > 0.99)
+```
+
+Histogram of the perc_by_ind values explained before
+```{r}
+# Plot histogram of the genotypes equally predicted (BestGuess) by individuals 
+# in both methods
+par(mfrow=c(1,1))
+GENO_HIST <- hist(perc_by_ind, breaks=seq(0.9, 1, by=0.002), 
+                  main="SNPs (genotypes) equally predicted", 
+                  xlab="% of equally predicted genotypes")
+```
+
+
+
+# Inversion prediction
+
+```{r echo=FALSE}
+#Load reference data scoreInvHap
+data("Refs")
+ref <- Refs$inv7p11.2
+data("SNPsR2")
+R2s <- SNPsR2$inv7p11.2
+data("hetRefs")
+hRefs <- hetRefs$inv7p11.2
+
+
+imputeinv_inv <- scoreInvHap(SNPlist = imputeinv, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+
+byparts_inv <- scoreInvHap(SNPlist = byparts, SNPsR2 = R2s, hetRefs = hRefs, Refs = ref, imputed = TRUE, verbose = TRUE, BPPARAM = MulticoreParam(10))
+```
+
+Predicted inversions with scoreInvHap
+```{r}
+imputeinv_inv
+byparts_inv
+```
+
+```{r echo=FALSE}
+scoreinvhap_table <- table(imputeinv = classification(imputeinv_inv)[sort(names(classification(imputeinv_inv)))], 
+      bypartsChr = classification(byparts_inv)[sort(names(classification(byparts_inv)))])
+```
+
+```{r}
+# Comparison table
+scoreinvhap_table
+sum(diag(scoreinvhap_table))/sum(scoreinvhap_table)
+kappa(scoreinvhap_table)
+```
+
+
+```{r}
+# Comparison of the results for both imputation methods
+par(mfrow=c(1,2))
+hist(maxscores(imputeinv_inv), breaks=seq(0, 1, by=0.05), main="imputeinv", xlab="Maxscores")
+hist(maxscores(byparts_inv), breaks=seq(0, 1, by=0.05), main="bypartsChr", xlab="Maxscores")
+```
+
+```{r echo=FALSE}
+# Calculate scores correlation by individuals
+score_corr <- mapply(cor, as.data.frame(scores(imputeinv_inv)[sort(rownames(scores(imputeinv_inv))),]),
+                          as.data.frame(scores(byparts_inv)[sort(rownames(scores(byparts_inv))),]))
+```
+
+```{r}
+# Score correlation by individuals between both imputation methods
+min(score_corr)
+max(score_corr)
+mean(score_corr)
+par(mfrow=c(1,1))
+SCORE_CORR_HIST <- hist(score_corr, breaks=seq(0.9, 1, by=0.002), 
+                        main="Score correlation by individuals", 
+                        xlab="Score correlation")
+```
+
+```{r}
+# Difference score between the highest similarity score and the second highest, 
+# in both imputation methods
+par(mfrow=c(1,2))
+hist(diffscores(imputeinv_inv), breaks=seq(0, 1, by=0.05), 
+     main="imputeinv", xlab="Difference score")
+hist(diffscores(byparts_inv), breaks=seq(0, 1, by=0.05), 
+     main="ByParts", xlab="Difference score")
+```
+
+
+```{r}
+# Numbers of scores used
+mean(numSNPs(imputeinv_inv))
+mean(numSNPs(byparts_inv))
+```
+
+```{r}
+# Number of samples in both imputation methods before and after QC filtering
+length(classification(imputeinv_inv))
+length(classification(imputeinv_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(imputeinv_inv, minDiff = 0.1, callRate = 0.9))/
+  length(classification(imputeinv_inv))
+length(classification(byparts_inv))
+length(classification(byparts_inv, minDiff = 0.1, callRate = 0.9))
+length(classification(byparts_inv, minDiff = 0.1, callRate = 0.9))/
+  length(classification(byparts_inv))
+```
+
+
+Correlation of the imputation quality (R^2^) of each SNP in both methods. It is highly correlated, specially in the SNPs with high quality. But it seems that in the SNPs with lower imputation quality, the imputeinv method is a little bit better.
+```{r}
+snps_7 <- intersect(rownames(info(imputeinv)), rownames(info(byparts)))
+ggplot() +
+  geom_point(aes(x = info(imputeinv)[snps_7,]$R2, 
+                 y = info(byparts)[snps_7,]$R2)) + 
+                #alpha = 0.5) +
+  geom_vline(aes(xintercept=0.5), colour="red") +
+  ggtitle("Minimac chr 7") +
+  xlab("imputeinv R2") +
+  ylab("ByParts R2")
+```
+
