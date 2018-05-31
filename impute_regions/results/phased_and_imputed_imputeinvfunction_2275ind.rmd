@@ -43,7 +43,7 @@ DS_byparts <- geno(byparts)$DS
 
 DS is the Estimated Alternate Allele Dosage, and it is calculated: [P(0/1)+2*P(1/1)]
 If the estimated posterior probability of the alternate allele is 0.98 and 0.96 in each haplotype, the genotype dosage is output as 0.98 + 0.97 = 1.95. i.e.: For each SNP: if an individual is homozygous for the alternate allele, its DS estimated value would be close to 2; if an individual is heterozygous, its DS estimated value would be close to 1; and if an individual is homozygous for the reference allele, its DS estimated value would be close to 0.
-Therefore, the distribution of the DS values should be focused on 0, 1 and 2. If there are many SNPs with DS in the middle of these values, it would probably be an indication of bad imputations.
+Therefore, the distribution of the DS values should be focused on 0, 1 and 2. If there are many SNPs with DS in the middle of these values, it would probably be an indication of poor imputations.
 ```{r}
 # Distribution of the DS values in each imputation
 par(mfrow=c(1,2))

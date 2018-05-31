@@ -4,9 +4,20 @@ author: "Ignacio Tolosana"
 output: pdf_document
 ---
 
+
+In this document, a comparison is shown between the imputation of the chromosome 7 using the Michigan Imputation Server and using Shapeit+Minimac3 in an own designed pipeline.
+Michigan Imputation Server uses Minimac3 for imputation, and the selected phasing method was Shapeit, in order to be able to corroborate that the results obtained with our pipeline were what we were looking for and that it worked as we would expect.
+
+Different parameters will be analysed to compare the imputation quality in both methods and the similarity in the results. Shapeit is a stochastic algorithm, and you cannot reproduce two multi-thread runs even if you specify the seed. However, the comparison will be a good orientative estimation to validate the designed pipeline. 
+
+
 # Imputation
 
+
+MIRAR LO DE CARGAR LOS ARCHIVOS A VER COMO LO HAGO AL FINAL
+
 ```{r echo=FALSE}
+opts_chunk$set(warning=FALSE, message=FALSE)
 library(VariantAnnotation)
 library(ggplot2)
 library(snpStats)
@@ -27,21 +38,30 @@ load(file = "nofilter_michigan_invclust_7.rda")
 load(file = "nofilter_minimac_7.rda")
 load(file = "nofilter_minimac_inv_7.rda")
 load(file = "nofilter_minimac_invclust_7.rda")
+
 ```
 
 ## Imputed data exploration
+General information about the imputed data. It shows the number of SNPs imputed and the number of individuals after the quality control filter (this filter was applied pre-imputation).
+An imputation quality filter was also applied to the imputed data. As explained later in this document, the imputation quality is tipically measured with a parameter called R^2^. Only high imputation quality data were selected, with a R^2^ of 0.5 or higher.
+In the information below is possible to observe that 192 SNPs were imputed by Michigan Imputation Server for 2275 individuals, whereas with our pipeline there were 223 SNPs imputed.
 ```{r}
 michigan_chr7
 minimac_chr7
 ```
 
 
+
 ## DS values
+DS is the Estimated Alternate Allele Dosage, and it is calculated: [P(0/1)+2*P(1/1)]
+If the estimated posterior probability of the alternate allele is 0.98 and 0.96 in each haplotype, the genotype dosage is output as 0.98 + 0.97 = 1.95. i.e.: For each SNP: if an individual is homozygous for the alternate allele, its DS estimated value would be close to 2; if an individual is heterozygous, its DS estimated value would be close to 1; and if an individual is homozygous for the reference allele, its DS estimated value would be close to 0.
+Therefore, the distribution of the DS values should be focused on 0, 1 and 2. If there are many SNPs with DS in the middle of these values, it would probably be an indication of poor imputations.
 ```{r echo=FALSE}
 DS_michigan <- geno(michigan_chr7)$DS
 DS_minimac <- geno(minimac_chr7)$DS
 ```
 
+A histogram is shown with the DS values from each method.
 ```{r}
 # Distribution of the DS values in each imputation
 par(mfrow=c(1,2))
@@ -51,7 +71,7 @@ HIST_MINIMAC <- hist(DS_minimac, breaks=seq(0, 2, by=0.05),
                      main="Minimac3", xlab="DS values")
 ```
 
-
+The variable cor_by_ind was calculated and it shows the correlation of the DS values of all the SNPs by individuals (correlation, between the two imputation methods, of the DS values of every SNP for each individual)
 ```{r echo=FALSE}
 #Get SNPs and individuals present in both methods
 DS_rows <- intersect(rownames(DS_michigan), rownames(DS_minimac))
@@ -73,32 +93,38 @@ max(cor_by_ind)
 mean(cor_by_ind)
 mean(cor_by_ind > 0.95)
 mean(cor_by_ind > 0.99)
-```
+``` 
+Looking at the results, there seems to be one (or few) outliers that are not very well correlated between the two methods, but the mean is 0.9857, and the 93% of the individuals have a correlation higher than 0.95 for the DS values.
 
-
+In the histogram below we can observe the distribution of the DS correlation values by individuals. The red lines indicate correlation values of 0.95 and 0.99.
 ```{r}
 # Histogram of the DS correlation values by individuals
 par(mfrow=c(1,1))
 CORR_HIST <- hist(cor_by_ind, breaks=seq(0.48, 1, by=0.01), 
                   main="DS correlation values by individuals", xlab="DS correlation")
+abline(v=0.95,col="red")
+abline(v=0.99,col="red")
 ```
 
 
 
 ## R^2^
+R^2^ is used as a measure of the imputation quality.
+It is defined as the estimated value of the squared correlation between imputed genotypes and true, unobserved genotypes. Since true genotypes are not available, this calculation is based on the idea that poorly imputed genotype counts will shrink towards their expectations based on population allele frequencies alone; specifically 2p where p is the frequency of the allele being imputed.
 ```{r echo=FALSE}
 rsq <- c(info(michigan_chr7)$R2, info(minimac_chr7)$R2)
-ismich <- rep("Michigan", length(info(michigan_chr7)$R2))
-ismich <- c(ismich, rep("Minimac", length(info(minimac_chr7)$R2)))
-comparison <- data.frame(rsq, ismich)
+method <- rep("Michigan", length(info(michigan_chr7)$R2))
+method <- c(method, rep("Minimac", length(info(minimac_chr7)$R2)))
+comparison <- data.frame(rsq, method)
 ```
 
 
-Density and histogram plots comparing the RS2 values in both methods ("ismich = TRUE" indicates the values for the Michigan imputation, whereas "ismich = FALSE" shows the values for the Minimac imputation)
+Density and histogram plots comparing the RS2 values in both methods. In blue is represented our pipeline (Minimac) while in yellow is represented the Michigan Imputation Server (Michigan).
+All the R^2^ values are higher than 0.5 due to the filter applied to the imputed data. In the density plot and the histograms, is possible to observe that the imputation done with the pipeline is slightly better than in the Michigan Server.
 ```{r}
 ggdensity(comparison, x = "rsq",
           add = "mean", rug = TRUE,
-          color = "ismich", fill = "ismich",
+          color = "method", fill = "method",
           palette = c("#E7B800", "#00AFBB"),
           legend.title = c(""), 
           xlab = ("Imputation R2"),
@@ -113,9 +139,8 @@ HIST_R2_MINIMAC <- hist(info(michigan_chr7)$R2, breaks=seq(0.5, 1, by=0.02),
 
 
 ## Genotype predictions
-
-
-```{r echo=FALSE, warning=FALSE}
+The BestGuess is the prediction of the SNP genotype. The following variable ('perc_by_ind') is the % of SNPs that are equally predicted in both methods for each individual (if all the SNPs of an individual were equally predicted during the imputation with both methods, the value of perc_by_ind for that individual will be 1; if half the SNPs of an individual were equally predicted during the imputation with both methods, the value of perc_by_ind for that individual will be 0.5).
+```{r echo=FALSE}
 #Convert genotypes into matrix
 gen_michigan <- genotypeToSnpMatrix(michigan_chr7)
 matrix_gen_michigan <- t(as(gen_michigan$genotype, "character"))
@@ -138,7 +163,6 @@ for (i in common_col){
 }
 ```
 
-Compare the genotype predictions (BestGuess) with each method by individuals. "perc_by_ind" is the % of SNPs by individual predicted equally in both methods
 ```{r}
 min(perc_by_ind)
 max(perc_by_ind)
@@ -146,15 +170,18 @@ mean(perc_by_ind)
 mean(perc_by_ind > 0.95)
 mean(perc_by_ind > 0.99)
 ```
+The mean of this variable is 0.997. This means that the mean % of SNPs equally predicted in both methods for each individual is 0.997, showing that the genotype predictions are almost the same with both methods. 
 
-
+In the histogram below we can observe the distribution of the genotype prediction correlation by individuals. The red lines indicate correlation values of 0.95 and 0.99.
 ```{r}
 # Plot histogram of the genotypes equally predicted (BestGuess) by individuals 
 # in both methods
 par(mfrow=c(1,1))
-GENO_HIST <- hist(perc_by_ind, breaks=seq(0.7, 1, by=0.01), 
+GENO_HIST <- hist(perc_by_ind, breaks=seq(0.75, 1, by=0.005), 
                   main="SNPs (genotypes) equally predicted with Michigan and Minimac3", 
                   xlab="% of equally predicted genotypes")
+abline(v=0.95,col="red")
+abline(v=0.99,col="red")
 ```
 
 
@@ -177,6 +204,11 @@ michigan_inv_chr7
 minimac_inv_chr7
 ```
 
+
+
+VALE, LO QUE QUIERO DECIR AQUI ES QUE OBTENEMOS LA TABLA DE CADA UNO, HACEMOS LA COMPARACION Y SALE MUY PARECIDO, PERO QUE NO CUADRA PARA NADA CON LAS FRECUENCIAS CALCULADAS PREVIAMENTE PARA ESTA INVERSION, Y QUE ENTONCES HACEMOS LO DE COMPARAR R2 IMPUTATION CON R2 SCOREINVHAP Y VEMOS QUE ES MEJOR DEJAR LAS IMPUTACIONES AUNQUE SEA CON MENOS CALIDAD PERO QUE AYUDARAN A PREDECIR MEJOR LAS INVERSIONES
+
+
 ```{r echo=FALSE}
 scoreinvhap_table <- table(Michigan = classification(michigan_inv_chr7)[sort(names(classification(michigan_inv_chr7)))], 
       Minimac = classification(minimac_inv_chr7)[sort(names(classification(minimac_inv_chr7)))])
@@ -186,6 +218,7 @@ scoreinvhap_table <- table(Michigan = classification(michigan_inv_chr7)[sort(nam
 # Comparison table
 scoreinvhap_table
 sum(diag(scoreinvhap_table))/sum(scoreinvhap_table)
+kappa(scoreinvhap_table)
 ```
 
 
