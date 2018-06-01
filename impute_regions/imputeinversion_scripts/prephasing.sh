@@ -8,6 +8,7 @@
 #vcftools --vcf ${data}.vcf --plink --out ${data}
 #plink --file ${data} --make-bed --out ${data}
 
+############################################################################## CUANDO PREPARE LO DE HACER PARA EL CROMOSOMA X, CAMBIAR 23 POR X?
 
 # Create files for imputation (Imputation preparation)
 mkdir prephasing_files
@@ -21,20 +22,31 @@ plink --bfile TEMP2 --update-map Position-$data-1000G.txt --make-bed --out TEMP3
 plink --bfile TEMP3 --flip Strand-Flip-$data-1000G.txt --make-bed --out TEMP4
 plink --bfile TEMP4 --reference-allele Force-Allele1-$data-1000G.txt --make-bed --out prephasing_files/${data}_updated
 rm TEMP*
-
+rm Run-plink.sh
 
 if [[ $format == plink ]] || [[ $format == PLINK ]]
 then
   for i in ${unique_chr[@]}
   do
     mkdir prephasing_files/${i}
-    plink --bfile prephasing_files/${data}_updated \
-        --reference-allele Force-Allele1-$data-1000G.txt \
-        --make-bed \
-        --mind 0.05 \
-        --geno 0.05 \
-        --chr $i \
-        --out prephasing_files/${i}/${i}_${data}_filtered
+    if [[ $i == X ]]
+    then
+      plink --bfile prephasing_files/${data}_updated \
+          --reference-allele Force-Allele1-$data-1000G.txt \
+          --make-bed \
+          --mind 0.05 \
+          --geno 0.05 \
+          --chr 23 \
+          --out prephasing_files/${i}/${i}_${data}_filtered
+    else
+      plink --bfile prephasing_files/${data}_updated \
+          --reference-allele Force-Allele1-$data-1000G.txt \
+          --make-bed \
+          --mind 0.05 \
+          --geno 0.05 \
+          --chr $i \
+          --out prephasing_files/${i}/${i}_${data}_filtered
+    fi
   done  
 elif [[ $format == vcf ]] || [[ $format == VCF ]]
 then
@@ -53,6 +65,9 @@ then
 fi 
 
 mv *-1000G.txt prephasing_files/
+mv $data.frq prephasing_files/
+mv $data.hh prephasing_files/
+mv $data.log prephasing_files/
 
 
 . ./phasing_shapeit.sh

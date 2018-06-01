@@ -17,19 +17,38 @@ mkdir phased_files
 for i in ${unique_chr[@]}
 do
   mkdir phased_files/${i}
-  shapeit -B prephasing_files/${i}/${i}_${data}_filtered \
-        -M /home/isglobal.lan/itolosana/homews/reference_panels/genetic_map_chr${i}_combined_b37.txt \
-        -O phased_files/${i}/${i}_${data}_filtered_phased \
-        --thread $cpus
+  if [[ $i == X ]]
+  then
+    shapeit -B prephasing_files/${i}/${i}_${data}_filtered \
+          -M /home/isglobal.lan/itolosana/homews/reference_panels/genetic_map_chrX_nonPAR_combined_b37.txt \
+          -O phased_files/${i}/${i}_${data}_filtered_phased \
+          --chrX \
+          --thread $cpus
+          
+    shapeit -convert \
+          --input-haps phased_files/${i}/${i}_${data}_filtered_phased \
+          --output-vcf phased_files/${i}/${i}_${data}_filtered_phased.vcf
+  else
+    shapeit -B prephasing_files/${i}/${i}_${data}_filtered \
+          -M /home/isglobal.lan/itolosana/homews/reference_panels/genetic_map_chr${i}_combined_b37.txt \
+          -O phased_files/${i}/${i}_${data}_filtered_phased \
+          --thread $cpus
         
-  shapeit -convert \
-        --input-haps phased_files/${i}/${i}_${data}_filtered_phased \
-        --output-vcf phased_files/${i}/${i}_${data}_filtered_phased.vcf
+    shapeit -convert \
+          --input-haps phased_files/${i}/${i}_${data}_filtered_phased \
+          --output-vcf phased_files/${i}/${i}_${data}_filtered_phased.vcf
+  fi
 done 
 
+mv shapeit_* phased_files/
+
+if [[ -z "$keep_files" ]] || [[ $keep_files != Yes ]] && [[ $keep_files != YES ]] && [[ $keep_files != yes ]] # By default, the intermediate files will be deleted
+then
+  rm -rf prephasing_files
+fi
 
 . ./minimac3_imputation.sh
-
+################################################################## ELIMINAR LOS ARCHIVOS QUE GENERA SHAPEIT, LOS .LOG, LOS .FRQ Y LOS .HH
 
 #shapeit --input-vcf gwas.vcf \
 #        -M genetic_map.txt \

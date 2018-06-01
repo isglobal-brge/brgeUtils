@@ -63,10 +63,18 @@ case $key in
 esac
 done
 
-## Exit if no data provided
+## Exit if no data provided or data format is not valid
 if [[ -z "$data" ]]
 then
   echo -e "\nNo input data to be imputed"
+  usage
+elif [[ -z "$format" ]]
+then
+  echo -e "\nData format not specified"
+  usage
+elif [[ $format != plink ]] && [[ $format != PLINK ]] && [[ $format != vcf ]] && [[ $format != VCF ]]
+then
+  echo -e "\nIndicate valid data format"
   usage
 fi
 
