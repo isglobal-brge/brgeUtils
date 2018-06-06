@@ -11,7 +11,7 @@
 #  echo "The file has NO more than 200 individuals"
 #  echo "$numberind"
 #fi
-
+#################################################### AÑADIR OPCION: MANTENER LOS CROMOSOMAS FASEADOS PERO EL RESTO NO
 mkdir phased_files
 
 for i in ${unique_chr[@]}
