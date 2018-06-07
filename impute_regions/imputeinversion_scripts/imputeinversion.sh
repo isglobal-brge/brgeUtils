@@ -172,7 +172,7 @@ fi
 
 
 
-. ./prephasing.sh # Call the prephasing script to proceed with the process
+. ./prephasing.sh # Call the prephasing script to proceed with the process (keeping the variables)
 
 
 
