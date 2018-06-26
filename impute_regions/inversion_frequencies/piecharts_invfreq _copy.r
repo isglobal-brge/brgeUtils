@@ -23,7 +23,7 @@ library(lattice)
 setwd("/scratch/itolosana/Rdata/")
 load(file = "Allpop_invstatus.Rdata")
 
-twoinv <- c("inv8_001", "inv17_007")
+kginversions <- names(invstatus_allpop)[-(1:2)]
 
 groups <- c("GBR", "FIN", "CHS", "PUR", "CDX", "CLM", "IBS", "PEL", "PJL", "KHV", "ACB",
             "GWD", "ESN", "BEB", "MSL", "STU", "ITU", "CEU", "YRI", "CHB", "JPT", "LWK",
@@ -44,14 +44,15 @@ leglon <- c(-19, 38, 125, -76, 117.5, -87, -19, -88, 65, 112, -46,
             -30, 15, 93, -17, 86, 67, 10, 30, 130, 153, 39.7, 
             -103, -114, 29, 57)
 
-lapply(twoinv, function(i) {
+lapply(kginversions, function(i) {
   inversion <- invstatus_allpop[,c("superpop", "pop", i)]
+  inversion <- inversion[!is.na(inversion)]
   inversion$N <- str_count(inversion[[i]], "N")
   inversion$I <- str_count(inversion[[i]], "I")
   
   Nfreq <- lapply(groups, function(w){
-    Ntot <- sum(inversion[inversion$pop==w,]$N)
-    Itot <- sum(inversion[inversion$pop==w,]$I)
+    Ntot <- sum(inversion[inversion$pop==w,]$N, na.rm=TRUE)
+    Itot <- sum(inversion[inversion$pop==w,]$I, na.rm=TRUE)
     freq <- Ntot/(Ntot+Itot)
     freq
   })
@@ -110,45 +111,3 @@ lapply(twoinv, function(i) {
   
 })
 
-
-
-
-
-floating.pie(108.9,19.2,c(Nfreq*100,100-(Nfreq*100)),r=5,col=c("blue","lightsteelblue2"))
-text(-24,56,expression(bold("FIN")),cex=0.8,lwd=1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-par(xpd=TRUE)
-
-text(-180,120, "a)", cex=2, font=2)
-text(-180,-120, "b)", cex=2, font=2)
-
-legend(120, 120, c("Frequency of NI", "Frequency of I"), col=c("blue","lightsteelblue2"), pch=16)
-
-
-
-dat <- as.data.frame.matrix(tt)
-res$li["MKK", "Axis1"] <- 0.45
-res$li["LWK", "Axis2"] <- -0.1
-res$li["CHD", "Axis2"] <- 0.1
-res$li["CHD", "Axis1"] <- 0.125
-
-s.label(res$li, clab = 1.4, lab = rownames(dat), xlim=c(-1,0.5), ylim=c(-0.4, 0.4))
-par(xpd=TRUE)
-res$co["X2","Comp1"] <- 0.18 # asthetical purposes
-res$co["X2","Comp2"] <- 0.05 # asthetical purposes
-for (i in 1:nrow(res$li))
-{
-  text(res$co[i,1], res$co[i,2], ll[i], cex=2, col="red")
-}
