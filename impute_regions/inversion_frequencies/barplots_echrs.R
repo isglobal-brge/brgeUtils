@@ -48,9 +48,7 @@ barchart(freq ~ countries | namesinv, data = df,
          key = key,
          scales = list(x = list(rot = 45)), col = c("dodgerblue4", "darkslategray2"),
          as.table = TRUE
-        
-         
-         )
+        )
 #
 dev.copy(pdf,'inv_frequencies_ecrhs.pdf')
 dev.off()
