@@ -6,7 +6,7 @@ mkdir prephasing_files # Folder to store all the files generated during pre-phas
 
 
 plink --bfile $data --freq --out $data # Generate freq file
-perl /home/isglobal.lan/itolosana/homews/reference_panels/HRC-1000G-check-bim.pl -b $data.bim -f $data.frq -r /home/isglobal.lan/itolosana/homews/reference_panels/1000GP_Phase3_combined.legend -g # Run script following the steps described in: http://www.well.ox.ac.uk/~wrayner/tools/
+perl data/HRC-1000G-check-bim.pl -b $data.bim -f $data.frq -r data/1000GP_Phase3_combined.legend -g # Run script following the steps described in: http://www.well.ox.ac.uk/~wrayner/tools/
 # Following lines, part of the Run-plink.sh script that the above script generates (what this does is well described in the section 'HRC or 1000G Imputation preparation and checking' in http://www.well.ox.ac.uk/~wrayner/tools/)
 plink --bfile $data --exclude Exclude-$data-1000G.txt --make-bed --out TEMP1
 plink --bfile TEMP1 --update-map Chromosome-$data-1000G.txt --update-chr --make-bed --out TEMP2

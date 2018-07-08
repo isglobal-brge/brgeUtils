@@ -48,7 +48,7 @@ do
   bcftools annotate --remove ID --set-id +'%CHROM:%POS:%REF:%ALT' --threads $cpus --output-type z --output postimputation_files/TEMP2.vcf.gz postimputation_files/TEMP1.vcf.gz
   tabix -p vcf postimputation_files/TEMP2.vcf.gz
   # Set rsnumber ids in the final file, using as a reference a file containing information about all the SNPs (in hg19, chr:pos:ref:alt and the rsnumber id)
-  bcftools annotate --annotations /home/isglobal.lan/itolosana/homews/reference_panels/All_new.vcf.gz --columns ID --threads $cpus --output-type z --output ${data}_imputed_files/${prefix[$counter]}/${prefix[$counter]}_${data}_imputed_final.vcf.gz postimputation_files/TEMP2.vcf.gz
+  bcftools annotate --annotations data/All_20180418.vcf.gz --columns ID --threads $cpus --output-type z --output ${data}_imputed_files/${prefix[$counter]}/${prefix[$counter]}_${data}_imputed_final.vcf.gz postimputation_files/TEMP2.vcf.gz
   tabix -p vcf ${data}_imputed_files/${prefix[$counter]}/${prefix[$counter]}_${data}_imputed_final.vcf.gz
   
   counter=$counter+1

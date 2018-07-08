@@ -23,7 +23,7 @@ do
             --recode \
             --out phased_files/${i}/${i}_${data}_females_filtered_phased_X
     # Impute the inversion region of the chromosome X (indicating by --start and --end) for the males
-    Minimac3-omp --refHaps /home/isglobal.lan/itolosana/homews/reference_panels/ALL.chrX.Non.Pseudo.Auto.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
+    Minimac3-omp --refHaps data/ALL.chrX.Non.Pseudo.Auto.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
             --haps phased_files/${i}/${i}_${data}_males_filtered_phased_X.recode.vcf \
             --rsid \
             --format GT,DS,GP \
@@ -33,7 +33,7 @@ do
             --prefix pimputed_files/${prefix[$counter]}/${prefix[$counter]}_${data}_males_imputed \
             --cpus $cpus
     # Impute the inversion region of the chromosome X (indicated by --start and --end) for the females
-    Minimac3-omp --refHaps /home/isglobal.lan/itolosana/homews/reference_panels/ALL.chrX.Non.Pseudo.Auto.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
+    Minimac3-omp --refHaps data/ALL.chrX.Non.Pseudo.Auto.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
             --haps phased_files/${i}/${i}_${data}_females_filtered_phased_X.recode.vcf \
             --rsid \
             --format GT,DS,GP \
@@ -45,7 +45,7 @@ do
           
   else # For the rest of the chromosomes
     # Impute the inversion region (indicated by --start and --end)
-    Minimac3-omp --refHaps /home/isglobal.lan/itolosana/homews/reference_panels/ALL.chr${i}.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
+    Minimac3-omp --refHaps data/ALL.chr${i}.phase3_v5.shapeit2_mvncall_integrated.noSingleton.genotypes.vcf.gz \
             --haps phased_files/${i}/${i}_${data}_filtered_phased.vcf \
             --rsid \
             --format GT,DS,GP \

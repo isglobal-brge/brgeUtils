@@ -10,7 +10,7 @@ do
   then
     # Run SHAPEIT to phase chromosome X (specifying the '--chrX' flag). SHAPEIT will phase female individuals and will set NA to haploid heterozygous males
     shapeit -B prephasing_files/${i}/${i}_${data}_filtered \
-          -M /home/isglobal.lan/itolosana/homews/reference_panels/genetic_map_chrX_nonPAR_combined_b37.txt \
+          -M data/genetic_map_chrX_nonPAR_combined_b37.txt \
           -O phased_files/${i}/${i}_${data}_filtered_phased \
           --chrX \
           --thread $cpus
@@ -21,7 +21,7 @@ do
   else
     # Run SHAPEIT to phase the chromosome (no need to indicate anything else, just the input file containing a single chromosome)
     shapeit -B prephasing_files/${i}/${i}_${data}_filtered \
-          -M /home/isglobal.lan/itolosana/homews/reference_panels/genetic_map_chr${i}_combined_b37.txt \
+          -M data/genetic_map_chr${i}_combined_b37.txt \
           -O phased_files/${i}/${i}_${data}_filtered_phased \
           --thread $cpus
     # Convert output files from SHAPEIT (.haps) to vcf format    
