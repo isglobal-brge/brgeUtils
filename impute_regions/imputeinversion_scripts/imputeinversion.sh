@@ -1,7 +1,8 @@
 #!/bin/bash
 
+
 # Define usage(). It will show the options of the function and the valid inputs when the user introduces a wrong option, does not introduce a necessary input or uses the -h|--help for help
-usage() { echo -e "\nUsage: $0 \t[-f,--dataformat <'PLINK' or 'VCF'>]\n\t\t\t\t[-d,--data <Files name without extension (format must be PLINK or VCF)>]\n\t\t\t\t[-i,--inversions <File containing inversion ranges | Inversion range | Inversion name | 'All'>]\n\t\t\t\t[-t,--threads <Integer. Number of threads to be used while phasing with SHAPEIT and while imputing with Minimac3>]\n\t\t\t\t[-k,--keep-files <Intermediate files created during the process will be removed by default. In order to keep them, indicate it writing 'Yes', 'YES' or 'yes'>]\n\nValid inversion names: ${SORTEDKEYS[@]}\n" 1>&2; exit 1; }
+usage() { echo -e "\nUsage: $0 \t[-d,--data <Files name without extension (format must be PLINK - bed/bim/fam)>]\n\t\t\t\t[-i,--inversions <File containing inversion ranges | Inversion range | Inversion name | 'All'>]\n\t\t\t\t[-t,--threads <Integer. Number of threads to be used while phasing with SHAPEIT and while imputing with Minimac3>]\n\t\t\t\t[-k,--keep-files <Intermediate files created during the process will be removed by default. In order to keep them,\n\t\t\t\tindicate it writing 'Yes', 'YES' or 'yes'>]\n\t\t\t\t[-h,--help <Shows this message>]\n\nValid inversion names: ${SORTEDKEYS[@]}\n" 1>&2; exit 1; }
 
 # Define an associative array between the inversion names and their ranges
 declare -A RANGES=( ["inv8p23.1"]="8:8055789-11980649" ["inv17q21.31"]="17:43661775-44372665" ["inv7p11.2"]="7:54290974-54386821" ["invXq13.2"]="X:72215927-72306774" 
@@ -30,11 +31,6 @@ while [[ $# -gt 0 ]]
 do
 key="$1"
 case $key in
-    -f|--dataformat) ################ Should do something if it is not valid
-    format="$2"
-    shift # past argument
-    shift # past value
-    ;;
     -d|--data)
     data="$2"
     shift # past argument
@@ -54,12 +50,6 @@ case $key in
     keep_files="$2"
     shift # past argument
     shift # past value
-    ;;
-    -w|--whole-chr) ############################## modify the script to be able to impute the whole chromosome or just the inversion region? (PUT ALL THE OPTIONS IN THE USAGE MESSAGE)
-    impute_whole_chr="$2"
-    shift # past argument
-    shift # past value
-    ;;
     -h|--help|*)
     usage
     shift # past argument
@@ -67,18 +57,10 @@ case $key in
 esac
 done
 
-## Exit if no data provided or data format is not valid
+## Exit if no data provided
 if [[ -z "$data" ]] # If $data is empty (the name of the files was not provided)
 then
   echo -e "\nNo input data to be imputed" # Show a message indicating the error
-  usage # Exit and show the usage message
-elif [[ -z "$format" ]] # If $format is empty (user did not indicate if the data format was plink or vcf)
-then
-  echo -e "\nData format not specified" # Show a message indicating the error
-  usage # Exit and show the usage message
-elif [[ $format != plink ]] && [[ $format != PLINK ]] && [[ $format != vcf ]] && [[ $format != VCF ]] # If the user wrote something different to vcf or plink in the --dataformat argument
-then
-  echo -e "\nIndicate valid data format" # Show a message indicating the error
   usage # Exit and show the usage message
 fi
 

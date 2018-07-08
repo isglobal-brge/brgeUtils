@@ -1,5 +1,6 @@
 #!/bin/bash
-################################################## PONER OPCION DE IMPUTAR EL CROMOSOMA ENTERO
+
+
 mkdir pimputed_files # Folder to store all the files generated during phasing process
 
 counter=0 # Start counter (will be used for the files names, starting and ending positions for each imputation)

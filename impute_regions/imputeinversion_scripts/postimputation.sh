@@ -1,11 +1,14 @@
 #!/bin/bash
 
+
 mkdir postimputation_files # Folder to store all the files generated during the postimputation process
 mkdir ${data}_imputed_files # Folder to store the final files (this one will NOT be removed)
 
 counter=0 # Start counter (will be used for the files names, starting and ending positions for each imputation)
 for i in ${chr[@]} # For each element in 'chr' (there might be repited chromomes: more than one invresion per chromosome to be imputed)
 do
+  mkdir postimputation_files/${prefix[$counter]} # Create file with the chromosome number to store the files separated by chromosomes
+  mkdir ${data}_imputed_files/${prefix[$counter]}
   if [[ $i == X ]] # If it is the chromosome X
   then
     # Compress the male imputed file with bgzip to avoid problems using bcftools afterwards
@@ -61,5 +64,3 @@ then
   rm -rf postimputation_files # Remove folder containing postimputed files (intermediate files between the imputed ones and the final ones with the correct ids)
 fi
 
-#bcftools view -r ${chr[$counter]}:${start[$counter]}-${end[$counter]} --output-type z --output-file TEMP1.vcf.gz TEMP0.vcf.gz # THIS STEP WON'T BE NECESSARY IF IMPUTING JUST THE INVERSION REGION
-#tabix -p vcf TEMP1.vcf.gz
