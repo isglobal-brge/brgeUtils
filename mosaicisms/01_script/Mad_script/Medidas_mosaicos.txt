@@ -1,0 +1,19 @@
+ss.del <- ss[ss$LRR <= -0.1 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.gain <- ss[ss$LRR >= 0.05 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.UPD <- ss[ss$LRR > -0.1 & ss$LRR <= 0.05 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+
+
+dim(ss.del)
+dim(ss.gain)
+dim(ss.UPD)
+
+
+
+ss.del <- ss[ss$LRR < -0.0278 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.gain <- ss[ss$LRR > 0.0278 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+ss.UPD <- ss[ss$LRR > -0.0278 & ss$LRR <= 0.0278 & ss$Bdev > 0.05 & !is.na(ss$Bdev) & ss$size > 0.5, ] ##You can change the lengths to filter results 
+
+
+dim(ss.del)
+dim(ss.gain)
+dim(ss.UPD)

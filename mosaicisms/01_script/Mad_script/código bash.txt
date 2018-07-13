@@ -1,0 +1,113 @@
+cd data/DATASETS/STUF
+ 1019  cd data/DATASETS/STUDY/dbGaP/
+ 1020  ls
+ 1021  cd phs000496.v1.p1_CIDR_NIA_GWAS_LOAD
+ 1022  ls
+ 1023  cd PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_RiskandProgression.v1.p1.c1.GRU-IRB/
+ 1024  cd GenotypeFiles/
+ 1025  ls
+ 1026  ll -ah
+ 1027  tar -xvf phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.GRU-IRB.set3.tar
+ 1028  ls
+ 1029  cd phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.set3
+ 1030  ls
+ 1031  zcat Mayeux_Omni1Q_release_FinalReport_18555BL1@1064614472.csv.gz | head
+ 1032  zcat Mayeux_Omni1Q_release_FinalReport_18555BL1@1064614472.csv.gz | head -n 20
+ 1033  pwd
+ 1034  ls
+ 1035  ls | wc -l
+ 1036  cd ..
+ 1037  ll -ah
+ 1038  man tar
+ 1039  cd
+ 1040  ls
+ 1041  cd /scratch/
+ 1042  ls
+ 1043  cd ajene
+ 1044  ls
+ 1045  cd SHARP
+ 1046  ls
+ 1047  cd phg000031.SHARP.raw_intensities.Affy1M.v1.p1.c1.ARR.set10/care_4/
+ 1048  ls
+ 1049  cd ..
+ 1050  ls
+ 1051  cd ..
+ 1052  ls
+ 1053   cd ..
+ 1054  ls
+ 1055  cd ..
+ 1056  ls
+ 1057  df -h
+ 1058  cd /scratch/
+ 1059  ls
+ 1060  mv mlopez/ mlopez3
+ 1061  ls
+ 1062  mv mlopez3/ mlopez/
+ 1063  cd
+ 1064  ~ls
+ 1065  ls
+ 1066  cd ~
+ 1067  pwd
+ 1068  cd data/DATASETS/STUDY/dbGaP/
+ 1069  ls
+ 1070  cd phs000496.v1.p1_CIDR_NIA_GWAS_LOAD
+ 1071  ls
+ 1072  cd PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_RiskandProgression.v1.p1.c1.GRU-IRB/GenotypeFiles/
+ 1073  ls
+ 1074  cd phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.set3
+ 1075  ls
+ 1076  ~/Software/R-3.4.3/bin/R
+ 1077  wget
+ 1078  Platform: x86_64-pc-linux-gnu (64-bit)
+ 1079  R es un software libre y viene sin GARANTIA ALGUNA.
+ 1080  Usted puede redistribuirlo bajo ciertas circunstancias.
+ 1081  Escriba 'license()' o 'licence()' para detalles de distribucion.
+ 1082  R es un proyecto colaborativo con muchos contribuyentes.
+ 1083  Escriba 'contributors()' para obtener más información y
+ 1084  'citation()' para saber cómo citar R o paquetes de R en publicaciones.
+ 1085  Escriba 'demo()' para demostraciones, 'help()' para el sistema on-line de ayuda,
+ 1086  o 'help.start()' para abrir el sistema de ayuda HTML con su navegador.
+ 1087  Escriba 'q()' para salir de R.
+ 1088  > ^Z
+ 1089  [1]+  Detenido                ~/Software/R-3.4.3/bin/R
+ 1090  wget https://cran.r-project.org/src/base/R-3/R-3.4.3.tar.gz
+ 1091  sl
+ 1092  ks
+ 1093  ls
+ 1094  rm -rf R-3.4.3.tar.gz
+ 1095  rm -rf "^Z"
+ 1096  ls
+ 1097  fg
+ 1098  ls
+ 1099  fg
+ 1100  ls
+ 1101  fg
+ 1102  ls
+ 1103  zcat Mayeux_Omni1Q_release_FinalReport_18555BL1@1064614472.csv.gz | head -n 20
+ 1104  fg
+ 1105  zcat Mayeux_Omni1Q_release_FinalReport_18555BL1@1064614472.csv.gz | head -n 20
+ 1106  ls
+ 1107  cd ..
+ 1108  ls
+ 1109  tar -zxvf phg000350.v1.LOAD_RiskandProgression.marker-info.MULTI.tar
+ 1110  tar -xvf phg000350.v1.LOAD_RiskandProgression.marker-info.MULTI.tar
+ 1111  ls
+ 1112  cd phg000350.v1.LOAD_RiskandProgression.marker-info.MULTI
+ 1113  ls
+ 1114  cd GenotypingCenter_Files/
+ 1115  ls
+ 1116  zcat HumanOmni1-Quad_v1-0_H.csv.gz | head
+ 1117  fg
+ 1118  ls
+ 1119  history
+ 1120  fg
+ 1121  zcat -n  HumanOmni1-Quad_v1-0_H.csv.gz | tail
+ 1122  man zcat
+ 1123  ls
+ 1124  gunzip HumanOmni1-Quad_v1-0_H.csv.gz
+ 1125  cat -n HumanOmni1-Quad_v1-0_H.csv | tail -n 20
+ 1126  cat -n HumanOmni1-Quad_v1-0_H.csv | tail -n 50
+ 1127  head -n 1134522 HumanOmni1-Quad_v1-0_H.csv | tail
+ 1128  head -n 1134522 HumanOmni1-Quad_v1-0_H.csv > HumanOmni1-Quad_v1-0_H_notail.csv
+ 1129  fg
+ 1130  history

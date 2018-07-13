@@ -1,0 +1,109 @@
+library(parallel)
+library(mad)
+
+
+setwd("/scratch/jpoliti/AD/CIDR_LOAD/")
+
+cidr_load <- setupParGADA.B.deviation(NumCols=6, GenoCol=6, BAFcol=4, log2ratioCol=5, mc.cores=15)
+save(cidr_load, file="cidr_load.Rdata")
+
+
+load("cidr_load.Rdata")
+parSBL(cidr_load, estim.sigma2=TRUE, aAlpha=0.8, mc.cores=15)
+parBE.B.deviation(cidr_load, T=7, MinSegLen=75, mc.cores=15)
+
+###
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/exportSegments2File.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD_2.R")
+
+
+exportSegments2File(cidr_load, file="res.txt")
+
+
+
+#
+# POST-ANALYSIS 
+#
+
+library(data.table)
+library(CairoPNG)
+
+load("cidr_load.Rdata")
+exportSegments2File(cidr_load, file="res.txt")
+
+ss <- fread("res.txt", header=T)
+ss <- ss[ss$State!=5, ]
+ss$size <- (ss$EndProbe - ss$IniProbe)/1000000
+ss.del <- ss[ss$LRR <= -0.1 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+ss.gain <- ss[ss$LRR >= 0.05 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+ss.UPD <- ss[ss$LRR > -0.1 & ss$LRR <= 0.05 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+
+##Dels 
+for (i in 1:nrow(ss.del)){
+CairoPNG(paste0("dels/", ss.del[i]$sample, "_chr", ss.del[i]$chr, ".png"))
+plotQMosaic(cidr_load, ss.del[i]$chr, ss.del[i]$sample)
+dev.off()
+}
+
+##UPD 
+for (i in 1:nrow(ss.UPD)){
+CairoPNG(paste0("UPD/", ss.UPD[i]$sample, "_chr", ss.UPD[i]$chr, ".png"))
+plotQMosaic(cidr_load, ss.UPD[i]$chr, ss.UPD[i]$sample)
+dev.off()
+}
+
+##Gains 
+for (i in 1:nrow(ss.gain)){
+CairoPNG(paste0("dups/", ss.gain[i]$sample, "_chr", ss.gain[i]$chr, ".png"))
+plotQMosaic(cidr_load, ss.gain[i]$chr, ss.gain[i]$sample)
+dev.off()
+}
+
+
+
+#
+# POST-ANALYSIS (Marcos)
+#
+
+library(data.table)
+library(CairoPNG)
+
+load("cidr_load.Rdata")
+exportSegments2File(cidr_load, file="res.txt")
+
+ss <- fread("res.txt", header=T)
+ss$size <- (ss$EndProbe - ss$IniProbe)/1000000
+ss.del <- ss[ss$LRR <= -0.1 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+ss.gain <- ss[ss$LRR >= 0.05 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+ss.UPD <- ss[ss$LRR > -0.1 & ss$LRR <= 0.05 & ss$Bdev > 0.05 & ss$size > 0.4] ##You can change the lengths to filter results 
+
+##Dels 
+for (i in 1:nrow(ss.del)){
+CairoPNG(paste0("dels/", ss.del[i]$sample, "_chr", ss.del[i]$chr, ".png"))
+plotQMosaic(test, ss.del[i]$chr, ss.del[i]$sample)
+dev.off()
+}
+
+##UPD 
+for (i in 1:nrow(ss.UPD)){
+CairoPNG(paste0("UPD/", ss.UPD[i]$sample, "_chr", ss.UPD[i]$chr, ".png"))
+plotQMosaic(test, ss.UPD[i]$chr, ss.UPD[i]$sample)
+dev.off()
+}
+
+##Gains 
+for (i in 1:nrow(ss.gain)){
+CairoPNG(paste0("dups/", ss.gain[i]$sample, "_chr", ss.gain[i]$chr, ".png"))
+plotQMosaic(test, ss.gain[i]$chr, ss.gain[i]$sample)
+dev.off()
+}
+
+samples <- unique(ss.f$sample)
+
+
+plotChr(cidr_load, chr=13, sample="27117BL1@1064613810")
+dev.off()
+
+plotChr(cidr_load, chr=13, sample="18514BL1@1064614478")
+

@@ -1,0 +1,68 @@
+login as: jpoliti
+Last login: Mon Feb 26 16:50:12 2018 from 172.20.32.171
+[jpoliti@isgws05 ~]$ execute R
+-bash: execute: no se encontró la orden
+[jpoliti@isgws05 ~]$ R
+
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R es un software libre y viene sin GARANTIA ALGUNA.
+Usted puede redistribuirlo bajo ciertas circunstancias.
+Escriba 'license()' o 'licence()' para detalles de distribucion.
+
+R es un proyecto colaborativo con muchos contribuyentes.
+Escriba 'contributors()' para obtener más información y
+'citation()' para saber cómo citar R o paquetes de R en publicaciones.
+
+Escriba 'demo()' para demostraciones, 'help()' para el sistema on-line de ayuda,
+o 'help.start()' para abrir el sistema de ayuda HTML con su navegador.
+Escriba 'q()' para salir de R.
+
+> library(data.table)
+data.table 1.10.4.3
+  The fastest way to learn (by data.table authors): https://www.datacamp.com/cou                                                            rses/data-analysis-the-data-table-way
+  Documentation: ?data.table, example(data.table) and browseVignettes("data.tabl                                                            e")
+  Release notes, videos and slides: http://r-datatable.com
+> getwd
+function ()
+.Internal(getwd())
+<bytecode: 0x189ded0>
+<environment: namespace:base>
+> getwd()
+[1] "/home/isglobal.lan/jpoliti"
+> setwd(/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CID                                                            R_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_Riska                                                            R_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_Riska                                                            ndProgression.v1.p1.c1.GRU-IRB/GenotypeFiles)Error: inesperado '/' in "setwd(/"
+> setwd(home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR                                                            Error in setwd(home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.                                                            p1_CIDR_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD                                                            _RiskandProgression.v1.p1.c1.GRU -  :
+  objeto 'home' no encontrado
+> setwd(data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootS                                               Error in setwd(data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_LOAD/PhenoGenotypeFile                                               s/RootStudyConsentSet_phs000496.CIDR_LOAD_RiskandProgression.v1.p1.c1.GRU -  :
+  objeto 'DATASETS' no encontrado
+> setwd (home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_LO                                               Error in setwd(home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_G                                               WAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_RiskandProgression.v1.p1.                                               c1.GRU -  :
+  objeto 'home' no encontrado
+> setwd ("/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_                                               > setwd ("/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_                                               > setwd ("/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_                                               > setwd ("/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs> getwd
+function ()
+.Internal(getwd())
+<bytecode: 0x189ded0>
+<environment: namespace:base>
+> getwd ()
+[1] "/home/isglobal.lan/jpoliti/data/DATASETS/STUDY/dbGaP/phs000496.v1.p1_CIDR_NIA_GWAS_LOAD/PhenoGenotypeFiles/RootStudyConsentSet_phs000496.CIDR_LOAD_RiskandProgression.v1.p1.c1.GRU-IRB/GenotypeFiles"
+> list.files()
+ [1] "phg000350.v1.LOAD_RiskandProgression.a.tar-file-indices.MULTI.tar"
+ [2] "phg000350.v1.LOAD_RiskandProgression.genotype-calls-matrixfmt.c1.GRU-IRB.tar"
+ [3] "phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.GRU-IRB.set1.tar"
+ [4] "phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.GRU-IRB.set2.tar"
+ [5] "phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.GRU-IRB.set3.tar"
+ [6] "phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.c1.set3"
+ [7] "phg000350.v1.LOAD_RiskandProgression.genotype-original-submission.MULTI.HapMap.tar"
+ [8] "phg000350.v1.LOAD_RiskandProgression.genotype-qc.MULTI.tar"
+ [9] "phg000350.v1.LOAD_RiskandProgression.marker-info.MULTI"
+[10] "phg000350.v1.LOAD_RiskandProgression.marker-info.MULTI.tar"
+[11] "phg000350.v1.LOAD_RiskandProgression.raw-data-idat.c1.GRU-IRB.set1.tar"
+[12] "phg000350.v1.LOAD_RiskandProgression.raw-data-idat.c1.GRU-IRB.set2.tar"
+[13] "phg000350.v1.LOAD_RiskandProgression.raw-data-idat.c1.GRU-IRB.set3.tar"
+[14] "phg000350.v1.LOAD_RiskandProgression.raw-data-idat.MULTI.HapMap.tar"
+[15] "phg000350.v1.LOAD_RiskandProgression.sample-info.MULTI.tar"
+[16] "phg000483.v1.LOAD_RiskandProgression.a.tar-file-indices.MULTI.tar"
+[17] "phg000483.v1.LOAD_RiskandProgression.genotype-imputed-data.c1.GRU-IRB.tar"
+[18] "phg000483.v1.LOAD_RiskandProgression.marker-info.MULTI.tar"
+[19] "phg000483.v1.LOAD_RiskandProgression.sample-info.MULTI.tar"

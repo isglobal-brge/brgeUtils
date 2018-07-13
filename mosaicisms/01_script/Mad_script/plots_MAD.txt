@@ -1,0 +1,33 @@
+/scratch/jpoliti/AD/CIDR_LOAD/Mad_script
+
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/exportSegments2File.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD.R")
+source("/scratch/jpoliti/AD/CIDR_LOAD/Mad_script/SuppFunctionsMAD_2.R")
+setwd("/scratch/jpoliti/AD/CIDR_LOAD/SBL")
+
+
+
+current_folder <- "/scratch/jpoliti/AD/CIDR_LOAD/SBL"
+new_folder <- "/scratch/jpoliti/AD/CIDR_LOAD/B.GADA"
+filesPattern = "^setupGADA*"
+list_of_files <- list.files(current_folder, pattern=filesPattern,) 
+file.copy(file.path(current_folder,list_of_files), new_folder)
+
+cidr_load <- prepare(cidr_load)
+labels(cidr_load)
+plotQMosaic(OBJETO_MAD, chromosome, sample)
+#samples[-1]
+
+##Nombres de las muestras
+samples <- labels(cidr_load)
+samples <- samples[-length(samples)]
+
+
+pdf("test.pdf", width=13, height=13)
+plotQMosaic(cidr_load, "13", "11750BL2@1064614413")
+dev.off()
+
+
+pdf("test.pdf", width=16, height=16)
+plotAllQMosaic(cidr_load, sample)
+dev.off()
