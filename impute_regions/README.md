@@ -1,3 +1,3 @@
-# Impute regions 
+# Impute inversion regions 
 
-Programs to impute candidate inversion regions before performing inversion calling
+Data generated at Ignacio's final master thesis project
