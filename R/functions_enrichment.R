@@ -78,6 +78,17 @@ plotSummary <- function(df, xl, yl, tit) {
                           high = "dark green")
 }
 
+postEnrichData1 <- function(x){
+  ans <- unlist(x)
+  mm <- data.frame(matrix(ans, ncol=2, byrow = TRUE))
+  names(mm) <- c("OR", "p.value")
+  nn <- names(ans)[grep("OR", names(ans))]
+  rownames(mm) <- nn
+  mm$Group <- unlist(lapply(
+    sapply(nn, function(x) strsplit(x, "\\." )), "[[", 1))
+  return(mm)
+}
+
 postEnrichData <- function(x){
   ans <- unlist(x)
   mm <- data.frame(matrix(ans, ncol=2, byrow = TRUE))
@@ -102,3 +113,21 @@ plotEnrich <- function(x, xl, yl, tit){
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ggtitle(tit)
 }
+
+
+plotEnrichRoadMap <- function(x, log10=FALSE, ...){
+  x$p.adjust[x$p.adjust==0] <- 10e-250
+  if (!log10){
+    plt <- ggplot(x, aes(y = Group, x = Correction, size=p.adjust)) +
+      scale_size_continuous(trans="reverse", ...)
+  } else{
+    plt <- ggplot(x, aes(y = Group, x = Correction, size=-log10(p.adjust))) +
+      scale_size_continuous(...)
+  }
+  plt + geom_point(aes(col = log(OR))) +
+    scale_colour_gradient2() +
+    xlab("Multiple testing \n correction") + 
+    ylab("Chromatin states") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
+}
+
