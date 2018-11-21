@@ -149,7 +149,7 @@ plotEnrich1 <- function(df, yl){
     xlab("Multiple testing \n correction") + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ggtitle("") + 
-    scale_colour_gradient(trans="reverse", low = "dark green", 
+    scale_colour_gradient(low = "dark green", 
                           high = "light green")
 }
 
