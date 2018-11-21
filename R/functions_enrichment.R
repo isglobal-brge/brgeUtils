@@ -131,3 +131,25 @@ plotEnrichRoadMap <- function(x, log10=FALSE, ...){
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
 }
 
+getTable1 <- function(x){
+  assign("x1", get(paste0(deparse(substitute(x)), ".bon")))
+  assign("x2", get(paste0(deparse(substitute(x)), ".fdr")))
+  x1 <- as.data.frame(x1)
+  x2 <- as.data.frame(x2)
+  x1$Correction <- rep("Bonferroni", nrow(x1))
+  x2$Correction <- rep("FDR", nrow(x2))
+  df <- rbind(x1, x2)
+  df
+}
+
+
+plotEnrich1 <- function(df, yl){
+  ggplot(df, aes(x = Correction, y = Description, col = p.adjust)) + 
+    geom_point(aes(size = Count)) +
+    xlab("Multiple testing \n correction") + ylab(yl) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    ggtitle("") + 
+    scale_colour_gradient(trans="reverse", low = "dark green", 
+                          high = "light green")
+}
+
