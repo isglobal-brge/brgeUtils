@@ -1,16 +1,16 @@
-State	Description	color	color2
-TssA	Active TSS	Red	255,0,0
-TssAFlnk	Flanking Active TSS	Orange Red	255,69,0
-TxFlnk	Transcr. at gene 5' and 3'	LimeGreen	50,205,50
-Tx	Strong transcription	Green	0,128,0
-TxWk	Weak transcription	DarkGreen	0,100,0
-EnhG	Genic enhancers	GreenYellow	194,225,5
-Enh	Enhancers	Yellow	255,255,0
-ZNF/Rpts	ZNF genes & repeats	Medium Aquamarine	102,205,170
-Het	Heterochromatin	PaleTurquoise	138,145,208
-TssBiv	Bivalent/Poised TSS	IndianRed	205,92,92
-BivFlnk	Flanking Bivalent TSS/Enh	DarkSalmon	233,150,122
-EnhBiv	Bivalent Enhancer	DarkKhaki	189,183,107
-ReprPC	Repressed PolyComb	Silver	128,128,128
-ReprPCWk	Weak Repressed PolyComb	Gainsboro	192,192,192
-Quies	Quiescent/Low	White	255,255,255
+Order	State	Description	color	color2	colorHex
+1	TssA	Active TSS	Red	255,0,0	#ff0000
+2	TssAFlnk	Flanking Active TSS	Orange Red	255,69,0	#ff4500
+3	TxFlnk	Transcr. at gene 5' and 3'	LimeGreen	50,205,50	#32cd32
+4	Tx	Strong transcription	Green	0,128,0	#00ff00
+5	TxWk	Weak transcription	DarkGreen	0,100,0	#006400
+6	EnhG	Genic enhancers	GreenYellow	194,225,5	#adff2f
+7	Enh	Enhancers	Yellow	255,255,0	#ffff00
+8	ZNF/Rpts	ZNF genes & repeats	Medium Aquamarine	102,205,170	#66ddaa
+9	Het	Heterochromatin	PaleTurquoise	138,145,208	#afeeee
+10	TssBiv	Bivalent/Poised TSS	IndianRed	205,92,92	#cd5c5c
+11	BivFlnk	Flanking Bivalent TSS/Enh	DarkSalmon	233,150,122	#e9967a
+12	EnhBiv	Bivalent Enhancer	DarkKhaki	189,183,107	#bdb76b
+13	ReprPC	Repressed PolyComb	Silver	128,128,128	#c0c0c0
+14	ReprPCWk	Weak Repressed PolyComb	Gainsboro	192,192,192	#dcdcdc
+15	Quies	Quiescent/Low	White	255,255,255	#ffffff
