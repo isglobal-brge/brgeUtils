@@ -60,6 +60,7 @@ plotChromStates <- function(x, chrom_states, state.x="state",
           axis.title.y = element_text(size = 16, face = "bold"),
           axis.text.x = element_text(angle = 90, hjust=1,
                                      vjust = 0.5)) +
+    guides(size = guide_legend(title = "-lo10(adj-pval")) +
     ggtitle(tit)
   else
     ggplot(df, aes(lab.exposure, State)) +
