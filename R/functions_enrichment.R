@@ -172,3 +172,18 @@ plotEnrich1 <- function(df, yl){
                           high = "light green")
 }
 
+
+getTableEnrich <- function(x, ff){
+  ans <- NULL
+  for (i in 1:length(x)){
+    tt.i <- data.frame(x[[i]])
+    if (nrow(tt.i)>0){
+      tt.i$exposure <- names(x)[i]
+      ans <- rbind(ans, tt.i)
+    }
+  }
+  write.table(ans, file=ff, quote=FALSE, row.names=FALSE,
+              sep="\t")
+}
+
+
