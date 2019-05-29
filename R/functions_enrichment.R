@@ -73,7 +73,7 @@ plotSummary <- function(df, xl, yl, tit) {
     geom_point(aes(size = Count)) +
     xlab(xl) + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    ggtitle(tit) + scale_size_continuous(limits=c(5,40)) +
+    ggtitle(tit) + scale_size_continuous(limits=c(0,40)) +
     scale_colour_gradient(trans="reverse", low = "light green", 
                           high = "dark green", na.value="transparent",
                           limits=c(0.05,0.0001))
@@ -122,8 +122,8 @@ plotEnrich <- function(x, xl, yl, tit){
     geom_point(aes(col = log(OR))) +
     scale_size_continuous("-log10(adj-pval)",
                           breaks = c(2,3,4),
-                          limits = c(2, 4),
-                          range = c(2,4)) +
+                          limits = c(-log10(0.05), 4),
+                          range = c(-log10(0.05),4)) +
     scale_colour_gradient2(na.value = "transparent",
                            limits=c(-1.5,1.5), low = "darkred", 
                            mid = "white", high = "darkblue", 
