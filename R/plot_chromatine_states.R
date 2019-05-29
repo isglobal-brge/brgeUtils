@@ -2,8 +2,9 @@ library(ggplot2)
 library(grid)
 library(RCurl)
 library(ggpubr)
-ff <- getURL("https://raw.githubusercontent.com/isglobal-brge/brgeUtils/master/data/chrom_states_descr.txt")
-chrom_states <- read.delim(text=ff, as.is = TRUE)
+
+ff.dir <- getURL("https://raw.githubusercontent.com/isglobal-brge/brgeUtils/master/data/chrom_states_descr.txt")
+chrom_states <- read.delim(text=ff.dir, as.is = TRUE)
 
 element_custom <- function(...) {
   structure(list(...), class = c("element_custom", "element_blank"))
