@@ -73,7 +73,7 @@ plotSummary <- function(df, xl, yl, tit) {
     geom_point(aes(size = Count)) +
     xlab(xl) + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    ggtitle(tit) + scale_size_continuous(limits=c(5,20)) +
+    ggtitle(tit) + scale_size_continuous(limits=c(5,40)) +
     scale_colour_gradient(trans="reverse", low = "light green", 
                           high = "dark green", na.value="transparent",
                           limits=c(0.05,0.0001))
