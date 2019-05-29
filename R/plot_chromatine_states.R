@@ -46,7 +46,7 @@ plotChromStates <- function(x, chrom_states, state.x="state",
   
   mycol <- rev(col2hex(chrom_states$color)[chrom_states$Order])
   
-  if (!tile)
+  if (!tile){
     df$log10pval <- -log10(df$p.value)
     df$log10pval[df$log10pval>4] <- 4
     ggplot(df, aes(lab.exposure, State, size = log10pval)) +
@@ -68,7 +68,8 @@ plotChromStates <- function(x, chrom_states, state.x="state",
                                      vjust = 0.5)) +
     guides(size = guide_legend(title = "-lo10(adj-pval")) +
     ggtitle(tit)
-  else
+  }
+  else {
     ggplot(df, aes(lab.exposure, State)) +
     geom_raster(aes(fill = values), hjust=0) +
     ylab("Blood chromatin states (ROADMAP)") +
@@ -82,6 +83,7 @@ plotChromStates <- function(x, chrom_states, state.x="state",
           axis.text.x = element_text(angle = 90, hjust=1),
           axis.ticks = element_blank()) +
     ggtitle(tit)
+  }
 }
 
 
