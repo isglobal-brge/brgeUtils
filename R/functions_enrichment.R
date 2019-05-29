@@ -89,16 +89,25 @@ postEnrichData1 <- function(x){
   return(mm)
 }
 
-postEnrichData <- function(x){
+postEnrichData <- function(x, type=1){
   ans <- unlist(x)
   mm <- data.frame(matrix(ans, ncol=2, byrow = TRUE))
   names(mm) <- c("OR", "p.value")
+  mm$OR[is.infinite(mm$OR)] <- 100
   nn <- names(ans)[grep("OR", names(ans))]
   rownames(mm) <- nn
   mm$exposure <- unlist(lapply(
     sapply(nn, function(x) strsplit(x, "\\." )), "[[", 1))
   mm$Group <- unlist(lapply(
     sapply(nn, function(x) strsplit(x, "\\." )), "[[", 2))
+  if (type==1)
+  mm$Group <- factor(mm$Group, levels=c("TSS1500", "TSS200","5'UTR",
+                                      "1stExon", "Body", "3'UTR"))
+  else if (type==2)
+    mm$Group <- factor(mm$Group, levels=c("N_Shelf", "N_Shore","Island",
+                                          "S_Shore", "S_Shelf", "OpenSea"))
+  else
+    mm$Group <- mm$Group
   mm$lab.exposure <- labs.exposures[mm$exposure, 1]
   mm$p.value[is.na(mm$p.value)] <- 1
   return(mm)
@@ -107,8 +116,9 @@ postEnrichData <- function(x){
 plotEnrich <- function(x, xl, yl, tit){
   ggplot(x, aes(x = Group, y = lab.exposure, size=p.adjust)) + 
     geom_point(aes(col = log(OR))) +
-    scale_size_continuous(trans="reverse") +   
-    scale_colour_gradient2() +
+    scale_size_continuous("-log10(adj-pval)",
+                          breaks = c(2,3,4)) +
+    scale_colour_gradient2(na.value = "transparent") +
     xlab(xl) + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ggtitle(tit)

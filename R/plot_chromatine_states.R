@@ -53,6 +53,7 @@ plotChromStates <- function(x, chrom_states, state.x="state",
     xlab("Exposures") + 
     scale_colour_manual(values=c("red", "blue"),
                         labels = c("OR<1", "OR>1"),
+                        limits = c(1,2),
                         na.translate = FALSE) +
     scale_size_continuous(breaks=c(2,3,4),
                           labels=c(2,3,4)) +
