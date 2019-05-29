@@ -114,11 +114,19 @@ postEnrichData <- function(x, type=1){
 }
 
 plotEnrich <- function(x, xl, yl, tit){
+  x$p.adjust[x$p.adjust>4] <- 4
+  x$OR[x$OR>exp(1.5)] <- 1.5
+  x$OR[x$OR<exp(-1.5)] <- -1.5
   ggplot(x, aes(x = Group, y = lab.exposure, size=p.adjust)) + 
     geom_point(aes(col = log(OR))) +
     scale_size_continuous("-log10(adj-pval)",
-                          breaks = c(2,3,4)) +
-    scale_colour_gradient2(na.value = "transparent") +
+                          breaks = c(2,3,4),
+                          limits = c(2, 4),
+                          range = c(2,4)) +
+    scale_colour_gradient2(na.value = "transparent",
+                           limits=c(-1.5,1.5), low = "darkred", 
+                           mid = "white", high = "darkblue", 
+                           midpoint = 0) +
     xlab(xl) + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ggtitle(tit)
