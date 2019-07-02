@@ -90,7 +90,7 @@ postEnrichData1 <- function(x){
   return(mm)
 }
 
-postEnrichData <- function(x, type=1){
+postEnrichData <- function(x, type=1, exposure=TRUE){
   ans <- unlist(x)
   mm <- data.frame(matrix(ans, ncol=2, byrow = TRUE))
   names(mm) <- c("OR", "p.value")
@@ -109,7 +109,10 @@ postEnrichData <- function(x, type=1){
                                           "S_Shore", "S_Shelf", "OpenSea"))
   else
     mm$Group <- mm$Group
-  mm$lab.exposure <- labs.exposures[mm$exposure, 1]
+  if (exposure)
+    mm$lab.exposure <- labs.exposures[mm$exposure, 1]
+  else
+    mm$lab.exposure <- mm$exposure
   mm$p.value[is.na(mm$p.value)] <- 1
   return(mm)
 }
