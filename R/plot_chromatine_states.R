@@ -26,7 +26,7 @@ widthDetails.custom_axis <- function(x) x$width + unit(1,"mm") # fudge
 
 
 plotChromStates <- function(x, chrom_states, state.x="state", 
-                            tile=TRUE, tit){
+                            tile=TRUE, tit, max.p=4){
   df <- merge(chrom_states, x, by.x="State", by.y=state.x)
   levels(df$beta) <- c("OR<1", "OR>1")
   df$values <- NA
@@ -49,7 +49,7 @@ plotChromStates <- function(x, chrom_states, state.x="state",
   
   if (!tile){
     df$log10pval <- -log10(df$p.value)
-    df$log10pval[df$log10pval>4] <- 4
+    df$log10pval[df$log10pval>max.p] <- max.p
     ggplot(df, aes(lab.exposure, State, size = log10pval)) +
     geom_point(aes(col=values)) + 
     ylab("Blood chromatin states (ROADMAP)") +
@@ -58,10 +58,10 @@ plotChromStates <- function(x, chrom_states, state.x="state",
                         labels = c("OR<1", "OR>1"),
                         limits = c(1,2),
                         na.translate = FALSE) +
-    scale_size_continuous(breaks=c(2,3,4),
-                          labels=c(2,3,4),
-                          limits = c(2, 4),
-                          range = c(2,4)) +
+    scale_size_continuous(breaks=c(2:max.p),
+                          labels=c(2:max.p),
+                          limits = c(2, max.p),
+                          range = c(2,max.p)) +
     labs(colour = "Enrichment") + 
     theme(axis.text.y = element_custom(fill=mycol),
           axis.title.y = element_text(size = 16, face = "bold"),
