@@ -103,7 +103,8 @@ postEnrichData <- function(x, type=1, exposure=TRUE){
     sapply(nn, function(x) strsplit(x, "\\." )), "[[", 2))
   if (type==1)
   mm$Group <- factor(mm$Group, levels=c("TSS1500", "TSS200","5'UTR",
-                                      "1stExon", "Body", "3'UTR"))
+                                      "1stExon", "Body", "3'UTR",
+                                      "ExonBnd"))
   else if (type==2)
     mm$Group <- factor(mm$Group, levels=c("N_Shelf", "N_Shore","Island",
                                           "S_Shore", "S_Shelf", "OpenSea"))
