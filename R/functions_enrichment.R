@@ -128,8 +128,8 @@ plotEnrich <- function(x, xl, yl, tit){
     geom_point(aes(col = log(OR))) +
     scale_size_continuous("-log10(adj-pval)",
                           breaks = c(2,3,4),
-                          limits = c(-log10(0.05), 4),
-                          range = c(-log10(0.05),4)) +
+                          limits = c(-log10(0.05), -log10(4)),
+                          range = c(-log10(0.05),-log10(4))) +
     scale_colour_gradient2(na.value = "transparent",
                            limits=c(-1.5,1.5), low = "darkred", 
                            mid = "white", high = "darkblue", 
