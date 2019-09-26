@@ -120,7 +120,7 @@ postEnrichData <- function(x, type=1, exposure=TRUE){
 plotEnrich <- function(x, xl, yl, tit){
   x$p.adjust[x$p.adjust>4] <- 4
   x$OR[x$OR>exp(1.5)] <- 1.5
-  x$OR[x$OR<exp(-1.5)] <- -1.5
+  x$OR[x$OR<0.5] <- 0.5
   ll <- levels(x$Group)
   ll <- gsub("_", "\\. ", ll)
   ll <- gsub("OpenSea", "Open Sea", ll)
@@ -128,8 +128,8 @@ plotEnrich <- function(x, xl, yl, tit){
     geom_point(aes(col = log(OR))) +
     scale_size_continuous("-log10(adj-pval)",
                           breaks = c(2,3,4),
-                          limits = c(-log10(0.05), -log10(4)),
-                          range = c(-log10(0.05),-log10(4))) +
+                          limits = c(-log10(0.05), 4),
+                          range = c(-log10(0.05),4)) +
     scale_colour_gradient2(na.value = "transparent",
                            limits=c(-1.5,1.5), low = "darkred", 
                            mid = "white", high = "darkblue", 
