@@ -124,7 +124,7 @@ plotEnrich <- function(x, xl, yl, tit){
   ll <- levels(x$Group)
   ll <- gsub("_", "\\. ", ll)
   ll <- gsub("OpenSea", "Open Sea", ll)
-  ggplot(x, aes(x = Group, y = lab.exposure, size=p.adjust)) + 
+  ggplot(x, aes(y = Group, x = lab.exposure, size=p.adjust)) + 
     geom_point(aes(col = log(OR))) +
     scale_size_continuous("-log10(adj-pval)",
                           breaks = c(2,3,4),
@@ -136,7 +136,7 @@ plotEnrich <- function(x, xl, yl, tit){
                            midpoint = 0) +
     xlab(xl) + ylab(yl) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    scale_x_discrete(labels=ll) +
+    scale_y_discrete(labels=ll) +
     ggtitle(tit)
 }
 
