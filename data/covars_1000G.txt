@@ -1,31 +1,101 @@
-Sample group sex
-HG00096 0 M
-HG00097 0 M
-HG00099 0 F
-HG00100 0 M
-HG00101 0 F
-HG00102 0 M
-HG00103 0 F
-HG00105 0 F
-HG00106 0 F
-HG00107 0 F
-HG00108 0 F
-HG00109 0 M
-HG00110 0 F
-HG00111 0 F
-HG00112 0 F
-HG00113 1 M
-HG00114 1 F
-HG00115 1 M
-HG00116 1 M
-HG00117 1 M
-HG00118 1 M
-HG00119 1 M
-HG00120 1 F
-HG00121 1 F
-HG00122 1 F
-HG00123 1 F
-HG00125 1 F
-HG00126 1 M
-HG00127 1 M
-HG00128 1 M
+Sample Family.ID Population Population.Description Gender
+HG00110 HG00110 GBR British in England and Scotland female
+HG00116 HG00116 GBR British in England and Scotland male
+HG00120 HG00120 GBR British in England and Scotland female
+HG00128 HG00128 GBR British in England and Scotland female
+HG00136 HG00136 GBR British in England and Scotland male
+HG00137 HG00137 GBR British in England and Scotland female
+HG00141 HG00141 GBR British in England and Scotland male
+HG00145 HG00145 GBR British in England and Scotland male
+HG00234 HG00234 GBR British in England and Scotland male
+HG00244 HG00244 GBR British in England and Scotland male
+HG00250 HG00250 GBR British in England and Scotland female
+HG00262 HG00262 GBR British in England and Scotland female
+HG00551 PR01 PUR Puerto Rican in Puerto Rico female
+HG00740 PR09 PUR Puerto Rican in Puerto Rico female
+HG01066 PR16 PUR Puerto Rican in Puerto Rico male
+HG01101 PR19 PUR Puerto Rican in Puerto Rico male
+HG01110 PR34 PUR Puerto Rican in Puerto Rico male
+HG01182 PR44 PUR Puerto Rican in Puerto Rico male
+HG01325 PR68 PUR Puerto Rican in Puerto Rico male
+HG01342 CLM26 CLM Colombian in Medellin, Colombia female
+HG01359 CLM32 CLM Colombian in Medellin, Colombia male
+HG01366 CLM34 CLM Colombian in Medellin, Colombia female
+HG01438 CLM45 CLM Colombian in Medellin, Colombia female
+HG01492 CLM63 CLM Colombian in Medellin, Colombia female
+HG01890 BB05 ACB African Caribbean in Barbados male
+HG02107 BB18 ACB African Caribbean in Barbados male
+HG02143 BB20 ACB African Caribbean in Barbados male
+HG02330 BB33 ACB African Caribbean in Barbados male
+HG02429 BB39 ACB African Caribbean in Barbados male
+HG02479 BB53 ACB African Caribbean in Barbados female
+HG02545 BB64 ACB African Caribbean in Barbados male
+NA10851 1344 CEU Utah residents with Northern and Western European ancestry male
+NA11893 1377 CEU Utah residents with Northern and Western European ancestry male
+NA11992 1362 CEU Utah residents with Northern and Western European ancestry male
+NA12347 13281 CEU Utah residents with Northern and Western European ancestry male
+NA12717 1358 CEU Utah residents with Northern and Western European ancestry female
+NA12761 1447 CEU Utah residents with Northern and Western European ancestry female
+NA12775 1451 CEU Utah residents with Northern and Western European ancestry male
+NA18488 Y001 YRI Yoruba in Ibadan, Nigeria female
+NA18517 Y013 YRI Yoruba in Ibadan, Nigeria female
+NA18548 NA18548 CHB Han Chinese in Bejing, China male
+NA18552 NA18552 CHB Han Chinese in Bejing, China female
+NA18564 NA18564 CHB Han Chinese in Bejing, China female
+NA18596 NA18596 CHB Han Chinese in Bejing, China female
+NA18597 NA18597 CHB Han Chinese in Bejing, China female
+NA18602 NA18602 CHB Han Chinese in Bejing, China female
+NA18618 NA18618 CHB Han Chinese in Bejing, China female
+NA18620 NA18620 CHB Han Chinese in Bejing, China male
+NA18625 NA18625 CHB Han Chinese in Bejing, China female
+NA18646 NA18646 CHB Han Chinese in Bejing, China female
+NA18907 Y025 YRI Yoruba in Ibadan, Nigeria female
+NA18966 NA18966 JPT Japanese in Tokyo, Japan male
+NA18977 NA18977 JPT Japanese in Tokyo, Japan male
+NA19004 NA19004 JPT Japanese in Tokyo, Japan male
+NA19020 NA19020 LWK Luhya in Webuye, Kenya male
+NA19027 NA19027 LWK Luhya in Webuye, Kenya male
+NA19035 NA19035 LWK Luhya in Webuye, Kenya male
+NA19042 NA19042 LWK Luhya in Webuye, Kenya female
+NA19043 NA19043 LWK Luhya in Webuye, Kenya male
+NA19063 NA19063 JPT Japanese in Tokyo, Japan male
+NA19076 NA19076 JPT Japanese in Tokyo, Japan male
+NA19079 NA19079 JPT Japanese in Tokyo, Japan male
+NA19152 Y072 YRI Yoruba in Ibadan, Nigeria female
+NA19197 Y035 YRI Yoruba in Ibadan, Nigeria female
+NA19198 Y035 YRI Yoruba in Ibadan, Nigeria male
+NA19256 Y092 YRI Yoruba in Ibadan, Nigeria male
+NA19317 NA19317 LWK Luhya in Webuye, Kenya male
+NA19331 LWK001 LWK Luhya in Webuye, Kenya male
+NA19334 NA19334 LWK Luhya in Webuye, Kenya male
+NA19374 NA19374 LWK Luhya in Webuye, Kenya male
+NA19404 NA19404 LWK Luhya in Webuye, Kenya female
+NA19455 NA19455 LWK Luhya in Webuye, Kenya male
+NA19625 2357 ASW African Ancestry in Southwest US female
+NA19652 m005 MXL Mexican Ancestry in Los Angeles, California male
+NA19722 m016 MXL Mexican Ancestry in Los Angeles, California female
+NA19723 m016 MXL Mexican Ancestry in Los Angeles, California male
+NA19792 2414 MXL Mexican Ancestry in Los Angeles, California male
+NA19904 2426 ASW African Ancestry in Southwest US male
+NA19913 2426a ASW African Ancestry in Southwest US female
+NA20274 2357a ASW African Ancestry in Southwest US female
+NA20287 2470 ASW African Ancestry in Southwest US female
+NA20298 2476a ASW African Ancestry in Southwest US male
+NA20317 2480 ASW African Ancestry in Southwest US female
+NA20318 2480a ASW African Ancestry in Southwest US male
+NA20320 2481a ASW African Ancestry in Southwest US female
+NA20321 2481 ASW African Ancestry in Southwest US female
+NA20334 2484 ASW African Ancestry in Southwest US female
+NA20355 2484a ASW African Ancestry in Southwest US female
+NA20359 2495 ASW African Ancestry in Southwest US female
+NA20362 2495a ASW African Ancestry in Southwest US male
+NA20853 NA20853 GIH Gujarati Indian in Houston,TX female
+NA20876 NA20876 GIH Gujarati Indian in Houston,TX female
+NA20882 NA20882 GIH Gujarati Indian in Houston,TX female
+NA20886 GIH002 GIH Gujarati Indian in Houston,TX female
+NA20891 NA20891 GIH Gujarati Indian in Houston,TX male
+NA20900 NA20900 GIH Gujarati Indian in Houston,TX female
+NA21109 NA21109 GIH Gujarati Indian in Houston,TX male
+NA21128 NA21128 GIH Gujarati Indian in Houston,TX male
+NA21135 NA21135 GIH Gujarati Indian in Houston,TX male
+NA21143 NA21143 GIH Gujarati Indian in Houston,TX female
