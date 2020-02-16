@@ -1,101 +1,101 @@
-scanID Family.ID Population Population.Description Gender casco
-HG00110 HG00110 GBR British in England and Scotland female 1
-HG00116 HG00116 GBR British in England and Scotland male 1
-HG00120 HG00120 GBR British in England and Scotland female 1
-HG00128 HG00128 GBR British in England and Scotland female 1
-HG00136 HG00136 GBR British in England and Scotland male 0
-HG00137 HG00137 GBR British in England and Scotland female 1
-HG00141 HG00141 GBR British in England and Scotland male 0
-HG00145 HG00145 GBR British in England and Scotland male 0
-HG00234 HG00234 GBR British in England and Scotland male 0
-HG00244 HG00244 GBR British in England and Scotland male 1
-HG00250 HG00250 GBR British in England and Scotland female 1
-HG00262 HG00262 GBR British in England and Scotland female 1
-HG00551 PR01 PUR Puerto Rican in Puerto Rico female 1
-HG00740 PR09 PUR Puerto Rican in Puerto Rico female 0
-HG01066 PR16 PUR Puerto Rican in Puerto Rico male 1
-HG01101 PR19 PUR Puerto Rican in Puerto Rico male 1
-HG01110 PR34 PUR Puerto Rican in Puerto Rico male 1
-HG01182 PR44 PUR Puerto Rican in Puerto Rico male 0
-HG01325 PR68 PUR Puerto Rican in Puerto Rico male 1
-HG01342 CLM26 CLM Colombian in Medellin, Colombia female 1
-HG01359 CLM32 CLM Colombian in Medellin, Colombia male 1
-HG01366 CLM34 CLM Colombian in Medellin, Colombia female 1
-HG01438 CLM45 CLM Colombian in Medellin, Colombia female 1
-HG01492 CLM63 CLM Colombian in Medellin, Colombia female 1
-HG01890 BB05 ACB African Caribbean in Barbados male 1
-HG02107 BB18 ACB African Caribbean in Barbados male 1
-HG02143 BB20 ACB African Caribbean in Barbados male 0
-HG02330 BB33 ACB African Caribbean in Barbados male 1
-HG02429 BB39 ACB African Caribbean in Barbados male 1
-HG02479 BB53 ACB African Caribbean in Barbados female 1
-HG02545 BB64 ACB African Caribbean in Barbados male 0
-NA10851 1344 CEU Utah residents with Northern and Western European ancestry male 1
-NA11893 1377 CEU Utah residents with Northern and Western European ancestry male 0
-NA11992 1362 CEU Utah residents with Northern and Western European ancestry male 0
-NA12347 13281 CEU Utah residents with Northern and Western European ancestry male 0
-NA12717 1358 CEU Utah residents with Northern and Western European ancestry female 1
-NA12761 1447 CEU Utah residents with Northern and Western European ancestry female 0
-NA12775 1451 CEU Utah residents with Northern and Western European ancestry male 1
-NA18488 Y001 YRI Yoruba in Ibadan, Nigeria female 1
-NA18517 Y013 YRI Yoruba in Ibadan, Nigeria female 0
-NA18548 NA18548 CHB Han Chinese in Bejing, China male 1
-NA18552 NA18552 CHB Han Chinese in Bejing, China female 0
-NA18564 NA18564 CHB Han Chinese in Bejing, China female 1
-NA18596 NA18596 CHB Han Chinese in Bejing, China female 1
-NA18597 NA18597 CHB Han Chinese in Bejing, China female 1
-NA18602 NA18602 CHB Han Chinese in Bejing, China female 0
-NA18618 NA18618 CHB Han Chinese in Bejing, China female 0
-NA18620 NA18620 CHB Han Chinese in Bejing, China male 0
-NA18625 NA18625 CHB Han Chinese in Bejing, China female 0
-NA18646 NA18646 CHB Han Chinese in Bejing, China female 1
-NA18907 Y025 YRI Yoruba in Ibadan, Nigeria female 1
-NA18966 NA18966 JPT Japanese in Tokyo, Japan male 1
-NA18977 NA18977 JPT Japanese in Tokyo, Japan male 1
-NA19004 NA19004 JPT Japanese in Tokyo, Japan male 1
-NA19020 NA19020 LWK Luhya in Webuye, Kenya male 0
-NA19027 NA19027 LWK Luhya in Webuye, Kenya male 1
-NA19035 NA19035 LWK Luhya in Webuye, Kenya male 0
-NA19042 NA19042 LWK Luhya in Webuye, Kenya female 0
-NA19043 NA19043 LWK Luhya in Webuye, Kenya male 1
-NA19063 NA19063 JPT Japanese in Tokyo, Japan male 0
-NA19076 NA19076 JPT Japanese in Tokyo, Japan male 1
-NA19079 NA19079 JPT Japanese in Tokyo, Japan male 1
-NA19152 Y072 YRI Yoruba in Ibadan, Nigeria female 0
-NA19197 Y035 YRI Yoruba in Ibadan, Nigeria female 1
-NA19198 Y035 YRI Yoruba in Ibadan, Nigeria male 0
-NA19256 Y092 YRI Yoruba in Ibadan, Nigeria male 0
-NA19317 NA19317 LWK Luhya in Webuye, Kenya male 1
-NA19331 LWK001 LWK Luhya in Webuye, Kenya male 0
-NA19334 NA19334 LWK Luhya in Webuye, Kenya male 0
-NA19374 NA19374 LWK Luhya in Webuye, Kenya male 1
-NA19404 NA19404 LWK Luhya in Webuye, Kenya female 1
-NA19455 NA19455 LWK Luhya in Webuye, Kenya male 0
-NA19625 2357 ASW African Ancestry in Southwest US female 0
-NA19652 m005 MXL Mexican Ancestry in Los Angeles, California male 0
-NA19722 m016 MXL Mexican Ancestry in Los Angeles, California female 1
-NA19723 m016 MXL Mexican Ancestry in Los Angeles, California male 1
-NA19792 2414 MXL Mexican Ancestry in Los Angeles, California male 1
-NA19904 2426 ASW African Ancestry in Southwest US male 0
-NA19913 2426a ASW African Ancestry in Southwest US female 1
-NA20274 2357a ASW African Ancestry in Southwest US female 0
-NA20287 2470 ASW African Ancestry in Southwest US female 0
-NA20298 2476a ASW African Ancestry in Southwest US male 1
-NA20317 2480 ASW African Ancestry in Southwest US female 0
-NA20318 2480a ASW African Ancestry in Southwest US male 1
-NA20320 2481a ASW African Ancestry in Southwest US female 0
-NA20321 2481 ASW African Ancestry in Southwest US female 1
-NA20334 2484 ASW African Ancestry in Southwest US female 0
-NA20355 2484a ASW African Ancestry in Southwest US female 1
-NA20359 2495 ASW African Ancestry in Southwest US female 1
-NA20362 2495a ASW African Ancestry in Southwest US male 0
-NA20853 NA20853 GIH Gujarati Indian in Houston,TX female 0
-NA20876 NA20876 GIH Gujarati Indian in Houston,TX female 0
-NA20882 NA20882 GIH Gujarati Indian in Houston,TX female 0
-NA20886 GIH002 GIH Gujarati Indian in Houston,TX female 1
-NA20891 NA20891 GIH Gujarati Indian in Houston,TX male 0
-NA20900 NA20900 GIH Gujarati Indian in Houston,TX female 1
-NA21109 NA21109 GIH Gujarati Indian in Houston,TX male 1
-NA21128 NA21128 GIH Gujarati Indian in Houston,TX male 0
-NA21135 NA21135 GIH Gujarati Indian in Houston,TX male 1
-NA21143 NA21143 GIH Gujarati Indian in Houston,TX female 1
+Sample	Family.ID	Population	Population.Description	Gender	casco
+HG00110	HG00110	GBR	British in England and Scotland	female	1
+HG00116	HG00116	GBR	British in England and Scotland	male	1
+HG00120	HG00120	GBR	British in England and Scotland	female	1
+HG00128	HG00128	GBR	British in England and Scotland	female	1
+HG00136	HG00136	GBR	British in England and Scotland	male	0
+HG00137	HG00137	GBR	British in England and Scotland	female	1
+HG00141	HG00141	GBR	British in England and Scotland	male	0
+HG00145	HG00145	GBR	British in England and Scotland	male	0
+HG00234	HG00234	GBR	British in England and Scotland	male	0
+HG00244	HG00244	GBR	British in England and Scotland	male	1
+HG00250	HG00250	GBR	British in England and Scotland	female	1
+HG00262	HG00262	GBR	British in England and Scotland	female	1
+HG00551	PR01	PUR	Puerto Rican in Puerto Rico	female	1
+HG00740	PR09	PUR	Puerto Rican in Puerto Rico	female	0
+HG01066	PR16	PUR	Puerto Rican in Puerto Rico	male	1
+HG01101	PR19	PUR	Puerto Rican in Puerto Rico	male	1
+HG01110	PR34	PUR	Puerto Rican in Puerto Rico	male	1
+HG01182	PR44	PUR	Puerto Rican in Puerto Rico	male	0
+HG01325	PR68	PUR	Puerto Rican in Puerto Rico	male	1
+HG01342	CLM26	CLM	Colombian in Medellin, Colombia	female	1
+HG01359	CLM32	CLM	Colombian in Medellin, Colombia	male	1
+HG01366	CLM34	CLM	Colombian in Medellin, Colombia	female	1
+HG01438	CLM45	CLM	Colombian in Medellin, Colombia	female	1
+HG01492	CLM63	CLM	Colombian in Medellin, Colombia	female	1
+HG01890	BB05	ACB	African Caribbean in Barbados	male	1
+HG02107	BB18	ACB	African Caribbean in Barbados	male	1
+HG02143	BB20	ACB	African Caribbean in Barbados	male	0
+HG02330	BB33	ACB	African Caribbean in Barbados	male	1
+HG02429	BB39	ACB	African Caribbean in Barbados	male	1
+HG02479	BB53	ACB	African Caribbean in Barbados	female	1
+HG02545	BB64	ACB	African Caribbean in Barbados	male	0
+NA10851	1344	CEU	Utah residents with Northern and Western European ancestry	male	1
+NA11893	1377	CEU	Utah residents with Northern and Western European ancestry	male	0
+NA11992	1362	CEU	Utah residents with Northern and Western European ancestry	male	0
+NA12347	13281	CEU	Utah residents with Northern and Western European ancestry	male	0
+NA12717	1358	CEU	Utah residents with Northern and Western European ancestry	female	1
+NA12761	1447	CEU	Utah residents with Northern and Western European ancestry	female	0
+NA12775	1451	CEU	Utah residents with Northern and Western European ancestry	male	1
+NA18488	Y001	YRI	Yoruba in Ibadan, Nigeria	female	1
+NA18517	Y013	YRI	Yoruba in Ibadan, Nigeria	female	0
+NA18548	NA18548	CHB	Han Chinese in Bejing, China	male	1
+NA18552	NA18552	CHB	Han Chinese in Bejing, China	female	0
+NA18564	NA18564	CHB	Han Chinese in Bejing, China	female	1
+NA18596	NA18596	CHB	Han Chinese in Bejing, China	female	1
+NA18597	NA18597	CHB	Han Chinese in Bejing, China	female	1
+NA18602	NA18602	CHB	Han Chinese in Bejing, China	female	0
+NA18618	NA18618	CHB	Han Chinese in Bejing, China	female	0
+NA18620	NA18620	CHB	Han Chinese in Bejing, China	male	0
+NA18625	NA18625	CHB	Han Chinese in Bejing, China	female	0
+NA18646	NA18646	CHB	Han Chinese in Bejing, China	female	1
+NA18907	Y025	YRI	Yoruba in Ibadan, Nigeria	female	1
+NA18966	NA18966	JPT	Japanese in Tokyo, Japan	male	1
+NA18977	NA18977	JPT	Japanese in Tokyo, Japan	male	1
+NA19004	NA19004	JPT	Japanese in Tokyo, Japan	male	1
+NA19020	NA19020	LWK	Luhya in Webuye, Kenya	male	0
+NA19027	NA19027	LWK	Luhya in Webuye, Kenya	male	1
+NA19035	NA19035	LWK	Luhya in Webuye, Kenya	male	0
+NA19042	NA19042	LWK	Luhya in Webuye, Kenya	female	0
+NA19043	NA19043	LWK	Luhya in Webuye, Kenya	male	1
+NA19063	NA19063	JPT	Japanese in Tokyo, Japan	male	0
+NA19076	NA19076	JPT	Japanese in Tokyo, Japan	male	1
+NA19079	NA19079	JPT	Japanese in Tokyo, Japan	male	1
+NA19152	Y072	YRI	Yoruba in Ibadan, Nigeria	female	0
+NA19197	Y035	YRI	Yoruba in Ibadan, Nigeria	female	1
+NA19198	Y035	YRI	Yoruba in Ibadan, Nigeria	male	0
+NA19256	Y092	YRI	Yoruba in Ibadan, Nigeria	male	0
+NA19317	NA19317	LWK	Luhya in Webuye, Kenya	male	1
+NA19331	LWK001	LWK	Luhya in Webuye, Kenya	male	0
+NA19334	NA19334	LWK	Luhya in Webuye, Kenya	male	0
+NA19374	NA19374	LWK	Luhya in Webuye, Kenya	male	1
+NA19404	NA19404	LWK	Luhya in Webuye, Kenya	female	1
+NA19455	NA19455	LWK	Luhya in Webuye, Kenya	male	0
+NA19625	2357	ASW	African Ancestry in Southwest US	female	0
+NA19652	m005	MXL	Mexican Ancestry in Los Angeles, California	male	0
+NA19722	m016	MXL	Mexican Ancestry in Los Angeles, California	female	1
+NA19723	m016	MXL	Mexican Ancestry in Los Angeles, California	male	1
+NA19792	2414	MXL	Mexican Ancestry in Los Angeles, California	male	1
+NA19904	2426	ASW	African Ancestry in Southwest US	male	0
+NA19913	2426a	ASW	African Ancestry in Southwest US	female	1
+NA20274	2357a	ASW	African Ancestry in Southwest US	female	0
+NA20287	2470	ASW	African Ancestry in Southwest US	female	0
+NA20298	2476a	ASW	African Ancestry in Southwest US	male	1
+NA20317	2480	ASW	African Ancestry in Southwest US	female	0
+NA20318	2480a	ASW	African Ancestry in Southwest US	male	1
+NA20320	2481a	ASW	African Ancestry in Southwest US	female	0
+NA20321	2481	ASW	African Ancestry in Southwest US	female	1
+NA20334	2484	ASW	African Ancestry in Southwest US	female	0
+NA20355	2484a	ASW	African Ancestry in Southwest US	female	1
+NA20359	2495	ASW	African Ancestry in Southwest US	female	1
+NA20362	2495a	ASW	African Ancestry in Southwest US	male	0
+NA20853	NA20853	GIH	Gujarati Indian in Houston,TX	female	0
+NA20876	NA20876	GIH	Gujarati Indian in Houston,TX	female	0
+NA20882	NA20882	GIH	Gujarati Indian in Houston,TX	female	0
+NA20886	GIH002	GIH	Gujarati Indian in Houston,TX	female	1
+NA20891	NA20891	GIH	Gujarati Indian in Houston,TX	male	0
+NA20900	NA20900	GIH	Gujarati Indian in Houston,TX	female	1
+NA21109	NA21109	GIH	Gujarati Indian in Houston,TX	male	1
+NA21128	NA21128	GIH	Gujarati Indian in Houston,TX	male	0
+NA21135	NA21135	GIH	Gujarati Indian in Houston,TX	male	1
+NA21143	NA21143	GIH	Gujarati Indian in Houston,TX	female	1
