@@ -65,8 +65,9 @@ plotChromStates <- function(x, chrom_states, state.x="state",
     labs(colour = "Enrichment") + 
     theme(axis.text.y = element_custom(fill=mycol),
           axis.title.y = element_text(size = 16, face = "bold"),
-          axis.text.x = element_text(angle = 90, hjust=1,
-                                     vjust = 0.5)) +
+          axis.text.x = element_text(angle = 90, hjust=1, size=14,
+                                     vjust = 0.5),
+          axis.title.x=element_text(size=16,face="bold")) +
     guides(size = guide_legend(title = "-log10(p-adj)")) +
       theme(axis.ticks.length = unit(5, "pt")) + 
     ggtitle(tit)

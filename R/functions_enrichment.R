@@ -131,11 +131,15 @@ plotEnrich <- function(x, xl, yl, tit){
                           limits = c(-log10(0.05), 4),
                           range = c(-log10(0.05),4)) +
     scale_colour_gradient2(na.value = "transparent",
-                           limits=c(-1.5,1.5), low = "darkred", 
+                           low = "darkred", 
                            mid = "white", high = "darkblue", 
                            midpoint = 0) +
     xlab(xl) + ylab(yl) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    theme(axis.text.y = element_text(size=14),
+          axis.title.y = element_text(size = 16, face = "bold"),
+          axis.text.x = element_text(angle = 90, hjust=1, size=14,
+                                     vjust = 0.5),
+          axis.title.x=element_text(size=16,face="bold")) +
     scale_y_discrete(labels=ll) +
     ggtitle(tit)
 }
